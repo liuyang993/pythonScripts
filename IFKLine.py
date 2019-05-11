@@ -7,6 +7,10 @@ import pymysql
 import numpy as np
 import datetime as dt
 
+from pylab import *
+mpl.rcParams['font.sans-serif'] = ['SimHei']
+
+import everydayAnnotations
 
 #print(sys.argv[1])
 #print(sys.argv[2])
@@ -32,11 +36,21 @@ for result in data:
     s.append(result[1])
     #s.append(result[1].timestamp())   插值用这个
 
+#print(s)
+#print(t)
+
+
 #z1 = np.polyfit(s, t, 3)#用3次多项式拟合
 #p1 = np.poly1d(z1)
 #print(p1) #在屏幕上打印拟合多项式
 
 plt.plot(s, t)
+
+everydayAnnotations.print_annotations(plt,sys.argv[1])
+
+
+
+
 
 
 #设置时间轴间隔 比如15分钟
