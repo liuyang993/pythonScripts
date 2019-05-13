@@ -57,8 +57,6 @@ while i<len(s):
         if FuPanArray.index(max(FuPanArray)) < len(FuPanArray)-600 and firstTop ==0:
             print('Find first top value is : ' , max(FuPanArray) , ' at ' , t[FuPanIndexBegin + FuPanArray.index(max(FuPanArray))] )
             firstTop = max(FuPanArray)
-
-            
             continue
         if firstTop !=0 and FuPanArray[-1] > firstTop - 5  and doubletop==0:
             print('Find double top value is : ' , FuPanArray[-1], ' wait until double top reach high')

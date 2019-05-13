@@ -21,7 +21,7 @@ logging.basicConfig(filename='example.log',level=logging.DEBUG)
 #if RealTime cal night use x = datetime.datetime(2018,11,29,23,15)   ;  hour(happentime)>=21
 #if FuPan cal night use x = datetime.datetime(2018,11,29,21,5)   ;  hour(happentime)>=21
 
-def compareQueue(L):
+def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个数值大情况有多少 
     LofQ = list(L.queue)
     IGreater = 0 
     for k in range(0,len(LofQ),1):
@@ -35,10 +35,7 @@ def compareQueue(L):
     return IGreater
 
 
-
-
-
-x = datetime.datetime(2019,5,9,9,30)
+x = datetime.datetime(2019,5,13,9,33,13)
 
 currentOneMinuteSlope=0.0    
 currentOneMinutePrice=0.0
@@ -58,7 +55,7 @@ class State(Enum):
 
 currentState = State.null
 
-initRecords =120    #  1 minutes 
+initRecords =4    #  1 minutes 
 
 qSlope= queue.Queue(maxsize=10)   # 10 个元素的队列 
 qSlope.empty()
@@ -66,25 +63,41 @@ qSlope.empty()
 conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
 while True:
-    sql = 'select happentime,lastprice from if1906_20190509 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'
+    sql = 'select happentime,lastprice from if1906_20190513 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
     #a.execute(sql,x)
 
     input = (x,initRecords)
-    a.execute(sql,input) 
+    a.execute(sql,input)
+    #a.execute(sql,x)  
     data=a.fetchall()
     #print(data)
     #print(x)s
     t=[]
     s=[]
+
+
+    i=0
+    isum=0
     for result in data:
-        t.append(result[0].timestamp())
-        s.append(result[1])
+        if i!=2:
+            #print('add first two element')
+            isum= isum + result[1]
+            i = i +1 
+            if i==2:
+                t.append(result[0].timestamp())
+                s.append(isum/2)
+                i=0
+                isum=0 
 
     #print(t)
     #print(s)
-    slope, intercept, r_value, p_value, std_err = stats.linregress(t,s)
-
-    if qSlope.full():
+    
+    #slope, intercept, r_value, p_value, std_err = stats.linregress(t,s)
+    
+    slope = (s[-1]-s[0])/(t[-1]-t[0])
+    #slope = 0-slope
+    
+    if qSlope.full():  # 如果满了 ，最早的出队
         qSlope.get()
         qSlope.put(slope)
     else:
@@ -93,15 +106,23 @@ while True:
     #for elem in list(qSlope.queue):
         #print(elem)
     ii=0
-    if qSlope.full():
+    if qSlope.full():            # 队列满了就比较
         ii=compareQueue(qSlope)
     #print('ii is ',ii)
 
-    if ii>=7:
+    if ii>=8 and currentState != State.beginRaise :
         print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at ' ,s[0] , " curve begin raise ")
+        currentState=State.beginRaise
+        #initRecords=initRecords+2
+    #if currentState == State.beginRaise:
+        #print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at ' , s[0], ", slope is  " ,"%.6f" % slope)
+    if ii<=3 and ii!=0 and currentState != State.beginDrop :                        # s[0]<s[1]
+        print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at s[0] is  ' ,s[0] , ' and s[1] is ' , s[1] ,  " curve begin drop ")
+        currentState=State.beginDrop
 
-    if ii<=3:
-        print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at ' ,s[0] , " curve stop raise ")
+    initRecords=initRecords+2 
+    #print(s[-1],s[0],t[-1],t[0],slope,ii)
+    #print(slope)    
 
 
     #初始化前3次 slope
@@ -153,12 +174,14 @@ while True:
     
     #lastSlope=slope
     #lastPrice=s[0]
-
-
+    
+    conn.autocommit(True)      # 如果不加这句 ， 会一直查出同样的结果 
     time.sleep(0.1)
     #time.sleep(5)    
     x= x + datetime.timedelta(seconds=1)
+    #print(x)
     #conn.close()    #very important , remember MUST close 
     #plt.plot(t, s)
     #plt.show()
 conn.close() 
+

@@ -51,8 +51,6 @@ everydayAnnotations.print_annotations(plt,sys.argv[1])
 
 
 
-
-
 #设置时间轴间隔 比如15分钟
 #xlocator = md.MinuteLocator(byminute=[0,15,30,45], interval = 1)
 #plt.xaxis.set_major_locator(xlocator)

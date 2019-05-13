@@ -58,3 +58,20 @@ def print_annotations(plt,tablename):
         plt.annotate(U'1分钟后3670.4平空，太小,像这种程度的急涨，自高点（这里是 3676）回落10个点是起码的', xy=(dt.datetime(2019,5,8,10,3,20)+dt.timedelta(minutes=90) , 3670.4), xytext=(dt.datetime(2019,5,8,10,3,20)+dt.timedelta(minutes=110) , 3670.4-10),
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")     
+
+    if tablename == 'if1906_20190514':
+        plt.annotate(U'3647下多单，\n当时的想法是 看到 ic1906急涨， 而 if 还没完全跟上', xy=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=90) , 3657), xytext=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=110) , 3657-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")
+
+        plt.annotate(U'3651平多单，老毛病拿不住', xy=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=90) , 3657), xytext=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=110) , 3657-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center") 
+
+        plt.annotate(U'3647下多单，当时感觉3648一线的底可能是假， 但是觉得也可能会再诱多一波， 尤其在11点半之前 ', xy=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=90) , 3657), xytext=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=110) , 3657-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")
+
+        plt.annotate(U'3648平多单，机警', xy=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=90) , 3657), xytext=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=110) , 3657-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")                        
