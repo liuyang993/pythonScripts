@@ -35,7 +35,13 @@ def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个
     return IGreater
 
 
-x = datetime.datetime(2019,5,13,9,33,13)
+#x = datetime.datetime(2019,5,13,9,33,13)
+x = datetime.datetime(2019,5,14,9,30)
+
+startRaiseTime = datetime.datetime(2000,1,1,9,30)
+startDropTime =  datetime.datetime(2000,1,1,9,30)
+
+
 
 currentOneMinuteSlope=0.0    
 currentOneMinutePrice=0.0
@@ -63,7 +69,9 @@ qSlope.empty()
 conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
 while True:
-    sql = 'select happentime,lastprice from if1906_20190513 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
+    #sql = 'select happentime,lastprice from if1906_20190514 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
+    sql = 'select happentime,b1 from if1906_20190514 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
+
     #a.execute(sql,x)
 
     input = (x,initRecords)
@@ -92,9 +100,9 @@ while True:
     #print(t)
     #print(s)
     
-    #slope, intercept, r_value, p_value, std_err = stats.linregress(t,s)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(t,s)
     
-    slope = (s[-1]-s[0])/(t[-1]-t[0])
+    #slope = (s[-1]-s[0])/(t[-1]-t[0])
     #slope = 0-slope
     
     if qSlope.full():  # 如果满了 ，最早的出队
@@ -113,12 +121,26 @@ while True:
     if ii>=8 and currentState != State.beginRaise :
         print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at ' ,s[0] , " curve begin raise ")
         currentState=State.beginRaise
+        #for elem in list(qSlope.queue):
+            #print(elem)
+        print('i is ',ii)
+        startRaiseTime = datetime.datetime.fromtimestamp(t[0])
+        if startRaiseTime < startDropTime + datetime.timedelta(minutes=1):
+            print(" find real buy point ")        
         #initRecords=initRecords+2
     #if currentState == State.beginRaise:
         #print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at ' , s[0], ", slope is  " ,"%.6f" % slope)
     if ii<=3 and ii!=0 and currentState != State.beginDrop :                        # s[0]<s[1]
         print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at s[0] is  ' ,s[0] , ' and s[1] is ' , s[1] ,  " curve begin drop ")
         currentState=State.beginDrop
+        #for elem in list(qSlope.queue):
+            #print(elem)
+        print('i is ',ii)
+        startDropTime = datetime.datetime.fromtimestamp(t[0])
+        if startDropTime < startRaiseTime + datetime.timedelta(minutes=1):
+            print(" find real sell point ")
+
+    #print('...........')
 
     initRecords=initRecords+2 
     #print(s[-1],s[0],t[-1],t[0],slope,ii)
@@ -176,7 +198,7 @@ while True:
     #lastPrice=s[0]
     
     conn.autocommit(True)      # 如果不加这句 ， 会一直查出同样的结果 
-    time.sleep(0.1)
+    time.sleep(0.01)
     #time.sleep(5)    
     x= x + datetime.timedelta(seconds=1)
     #print(x)
