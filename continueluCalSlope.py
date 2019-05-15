@@ -10,6 +10,14 @@ import logging
 from enum import Enum
 import queue
 
+
+def normalizeArray(pa):
+    amin,amax = min(pa),max(pa)
+    for j in range(len(pa)):
+        pa[j]=(pa[j]-amin)/(amax-amin)
+
+
+
 logging.basicConfig(filename='example.log',level=logging.DEBUG)
 #logging.debug('This message should go to the log file')
 #logging.info('So should this')
@@ -36,7 +44,7 @@ def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个
 
 
 #x = datetime.datetime(2019,5,13,9,33,13)
-x = datetime.datetime(2019,5,14,9,30)
+x = datetime.datetime(2019,5,15,9,30,2)
 
 startRaiseTime = datetime.datetime(2000,1,1,9,30)
 startDropTime =  datetime.datetime(2000,1,1,9,30)
@@ -70,7 +78,7 @@ conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfutur
 a=conn.cursor()
 while True:
     #sql = 'select happentime,lastprice from if1906_20190514 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
-    sql = 'select happentime,b1 from if1906_20190514 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
+    sql = 'select happentime,b1 from if1906_20190515 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
 
     #a.execute(sql,x)
 
@@ -83,6 +91,8 @@ while True:
     t=[]
     s=[]
 
+    tCpy=[]
+    sCpy=[]
 
     i=0
     isum=0
@@ -99,8 +109,19 @@ while True:
 
     #print(t)
     #print(s)
+
+    tCpy=list(t)   #  shallow copy 
+    sCpy=list(s)
+
+    normalizeArray(tCpy)
+    normalizeArray(sCpy)
+
+    #print(t)
+    #print(s)
+
     
-    slope, intercept, r_value, p_value, std_err = stats.linregress(t,s)
+    #slope, intercept, r_value, p_value, std_err = stats.linregress(t,s)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(tCpy,sCpy)
     
     #slope = (s[-1]-s[0])/(t[-1]-t[0])
     #slope = 0-slope
@@ -140,9 +161,16 @@ while True:
         if startDropTime < startRaiseTime + datetime.timedelta(minutes=1):
             print(" find real sell point ")
 
-    #print('...........')
+    #print(datetime.datetime.fromtimestamp(t[0]))
 
+    print('----------',datetime.datetime.fromtimestamp(t[0]),'---',s[0])
+    #for elem in list(qSlope.queue):
+        #print(elem)    
+
+    print('i is ',ii)
     initRecords=initRecords+2 
+
+
     #print(s[-1],s[0],t[-1],t[0],slope,ii)
     #print(slope)    
 
@@ -198,7 +226,7 @@ while True:
     #lastPrice=s[0]
     
     conn.autocommit(True)      # 如果不加这句 ， 会一直查出同样的结果 
-    time.sleep(0.01)
+    time.sleep(1)
     #time.sleep(5)    
     x= x + datetime.timedelta(seconds=1)
     #print(x)
