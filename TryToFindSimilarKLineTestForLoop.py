@@ -10,6 +10,9 @@ import pandas as pd
 import seaborn as sns
 import time
 
+import sys
+#sys.argv += 'if1906_20190516 09:30:00 10:00:00'.split()
+
 def normalizeArray(pa):
     amin,amax = min(pa),max(pa)
     for j in range(len(pa)):
@@ -56,7 +59,7 @@ conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfutur
 a=conn.cursor()
 
 sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + sys.argv[1]  + ' where time(happentime)>"'  + sys.argv[2]  + '" and time(happentime)<"' + sys.argv[3]  + '";' 
-#print(sql)
+print(sql)
 a.execute(sql)
 data=a.fetchall()
 
@@ -76,7 +79,7 @@ print('************************************************')
 
 loopi = 1 
 loopTableName = sys.argv[1]
-while loopi < 8:
+while loopi < 20:
     loopi = loopi + 1
     #sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from if1906_20190419'   + ' where time(happentime)<"'  + sys.argv[2]  + '";'
     sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "if%" and table_name < "' + loopTableName + '" order by create_time desc limit 1;'

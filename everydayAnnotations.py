@@ -1,7 +1,7 @@
 import datetime as dt
 
 def print_annotations(plt,tablename):
-    if tablename == 'if1906_20190509':
+    if tablename == 'if1906_20200509':
 
         plt.figtext(0,.93,'周四\n期初一空一多，if昨收长上影线，冲高回落， 收3652\n随波逐流单: 无\n逆市单: 4')
 
@@ -42,7 +42,7 @@ def print_annotations(plt,tablename):
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")      
     
-    if tablename == 'if1906_20190508':
+    if tablename == 'if1906_20200508':
         plt.annotate(U'3657下空单，\n当时的想法是 366X是昨天的低点，而昨天的走势尤其是下午的急涨急落很让人联想到20190307，所以以为今天的高点也会和20190308一样是昨天低点366x附近\n但是怎么不想想20190308涨到了10点半', xy=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=90) , 3657), xytext=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=110) , 3657-10),
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")
@@ -59,7 +59,7 @@ def print_annotations(plt,tablename):
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")     
 
-    if tablename == 'if1906_20190514':
+    if tablename == 'if1906_20200514':
         plt.annotate(U'3647下多单，\n当时的想法是 看到 ic1906急涨， 而 if 还没完全跟上', xy=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=90) , 3657), xytext=(dt.datetime(2019,5,8,9,46,50)+dt.timedelta(minutes=110) , 3657-10),
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")

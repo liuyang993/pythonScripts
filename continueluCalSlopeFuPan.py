@@ -16,18 +16,7 @@ def normalizeArray(pa):
     for j in range(len(pa)):
         pa[j]=(pa[j]-amin)/(amax-amin)
 
-
-
 logging.basicConfig(filename='example.log',level=logging.DEBUG)
-#logging.debug('This message should go to the log file')
-#logging.info('So should this')
-#logging.warning('And this, too')
-
-# if FuPan calculate morning ,  use   x = datetime.datetime(2018,11,28,9,15)     ; hour(happentime)>=9
-# if RealTime calculate morning ,  use   x = datetime.datetime(2018,11,28,11,33)  ; hour(happentime)>=9
-
-#if RealTime cal night use x = datetime.datetime(2018,11,29,23,15)   ;  hour(happentime)>=21
-#if FuPan cal night use x = datetime.datetime(2018,11,29,21,5)   ;  hour(happentime)>=21
 
 def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个数值大情况有多少 
     LofQ = list(L.queue)
@@ -43,12 +32,10 @@ def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个
     return IGreater
 
 
-#x = datetime.datetime(2019,5,13,9,33,13)
-x = datetime.datetime(2019,5,16,13,32,20)
+x = datetime.datetime(2019,5,16,9,30,2)
 
 startRaiseTime = datetime.datetime(2000,1,1,9,30)
 startDropTime =  datetime.datetime(2000,1,1,9,30)
-
 
 
 currentOneMinuteSlope=0.0    
@@ -77,48 +64,35 @@ qSlope.empty()
 conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
 startMillSecond = int(time.time() * 1000)
+
+#一次全取出
+sql = 'select happentime,b1 from if1906_20190516;' 
+a.execute(sql)
+data=a.fetchall()
+t=[]
+s=[]
+for result in data:
+    t.append(result[0].timestamp())
+    s.append(result[1])
+ 
+#tCpy=[] 
+#sCpy=[]
+
 while True:
-    #如果是中午休市 
-    if x>datetime.datetime(2019,5,16,11,30) and x<datetime.datetime(2019,5,16,13):
-        millSeondDiff = 0
-        startMillSecond=int(time.time() * 1000)
-        continue
-
-    #sql = 'select happentime,lastprice from if1906_20190514 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
-    sql = 'select happentime,b1 from if1906_20190516 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
-
-    #a.execute(sql,x)
-
-    input = (x,initRecords)
-    a.execute(sql,input)
-    #a.execute(sql,x)  
-    data=a.fetchall()
-    #print(data)
-    #print(x)s
-    t=[]
-    s=[]
-
-    tCpy=[]
+    tCpy=[] 
     sCpy=[]
-
+    
     i=0
     isum=0
-    for result in data:
+    for k in range(0,initRecords,1):
         if i!=2:
-            #print('add first two element')
-            isum= isum + result[1]
+            isum= isum + s[k]
             i = i +1 
             if i==2:
-                t.append(result[0].timestamp())
-                s.append(isum/2)
+                tCpy.append(t[k])
+                sCpy.append(isum/2)
                 i=0
-                isum=0 
-
-    #print(t)
-    #print(s)
-
-    tCpy=list(t)   #  shallow copy 
-    sCpy=list(s)
+                isum=0
 
     normalizeArray(tCpy)
     normalizeArray(sCpy)
@@ -147,24 +121,24 @@ while True:
     #print('ii is ',ii)
 
     if ii>=8 and currentState != State.beginRaise :
-        print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at ' ,s[0] , " curve begin raise ")
+        print("when ", datetime.datetime.fromtimestamp(t[k+1]) , ' at ' ,s[k+1] , " curve begin raise ")
         currentState=State.beginRaise
         #for elem in list(qSlope.queue):
             #print(elem)
         print('i is ',ii)
-        startRaiseTime = datetime.datetime.fromtimestamp(t[0])
+        startRaiseTime = datetime.datetime.fromtimestamp(t[k+1])
         if startRaiseTime < startDropTime + datetime.timedelta(minutes=1):
             print(" find real buy point ")        
         #initRecords=initRecords+2
     #if currentState == State.beginRaise:
         #print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at ' , s[0], ", slope is  " ,"%.6f" % slope)
     if ii<=3 and ii!=0 and currentState != State.beginDrop :                        # s[0]<s[1]
-        print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at s[0] is  ' ,s[0] ,   " curve begin drop ")
+        print("when ", datetime.datetime.fromtimestamp(t[k+1]) , ' at ' ,s[k+1] , " curve begin drop ")
         currentState=State.beginDrop
         #for elem in list(qSlope.queue):
             #print(elem)
         print('i is ',ii)
-        startDropTime = datetime.datetime.fromtimestamp(t[0])
+        startDropTime = datetime.datetime.fromtimestamp(t[k+1])
         if startDropTime < startRaiseTime + datetime.timedelta(minutes=1):
             print(" find real sell point ")
 
@@ -238,10 +212,11 @@ while True:
     
     conn.autocommit(True)      # 如果不加这句 ， 会一直查出同样的结果 
     
-    #time.sleep(0.1)
-    time.sleep((1000-millSeondDiff)/1000)
-    startMillSecond = int(time.time() * 1000)
+    time.sleep(0.01)
+    #time.sleep((1000-millSeondDiff)/1000)
+    #startMillSecond = int(time.time() * 1000)
 
+    #time.sleep(5)    
     x= x + datetime.timedelta(seconds=1)
     #print(x)
     #conn.close()    #very important , remember MUST close 
