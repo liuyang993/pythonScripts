@@ -44,7 +44,7 @@ def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个
 
 
 #x = datetime.datetime(2019,5,13,9,33,13)
-x = datetime.datetime(2019,5,16,13,32,20)
+x = datetime.datetime(2019,5,17,13,5,40)
 
 startRaiseTime = datetime.datetime(2000,1,1,9,30)
 startDropTime =  datetime.datetime(2000,1,1,9,30)
@@ -79,13 +79,13 @@ a=conn.cursor()
 startMillSecond = int(time.time() * 1000)
 while True:
     #如果是中午休市 
-    if x>datetime.datetime(2019,5,16,11,30) and x<datetime.datetime(2019,5,16,13):
+    if x>datetime.datetime(2019,5,17,11,30) and x<datetime.datetime(2019,5,17,13):
         millSeondDiff = 0
         startMillSecond=int(time.time() * 1000)
         continue
 
     #sql = 'select happentime,lastprice from if1906_20190514 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
-    sql = 'select happentime,b1 from if1906_20190516 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
+    sql = 'select happentime,b1 from if1906_20190517 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
 
     #a.execute(sql,x)
 
