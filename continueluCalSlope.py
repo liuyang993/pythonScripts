@@ -44,7 +44,7 @@ def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个
 
 
 #x = datetime.datetime(2019,5,13,9,33,13)
-x = datetime.datetime(2019,5,17,13,5,40)
+x = datetime.datetime(2019,5,21,13,10,25)
 
 startRaiseTime = datetime.datetime(2000,1,1,9,30)
 startDropTime =  datetime.datetime(2000,1,1,9,30)
@@ -79,13 +79,13 @@ a=conn.cursor()
 startMillSecond = int(time.time() * 1000)
 while True:
     #如果是中午休市 
-    if x>datetime.datetime(2019,5,17,11,30) and x<datetime.datetime(2019,5,17,13):
+    if x>datetime.datetime(2019,5,17,13,3,55) and x<datetime.datetime(2019,5,17,13):
         millSeondDiff = 0
         startMillSecond=int(time.time() * 1000)
         continue
 
     #sql = 'select happentime,lastprice from if1906_20190514 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
-    sql = 'select happentime,b1 from if1906_20190517 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
+    sql = 'select happentime,b1 from if1906_20190521 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit %s;'     # %s
 
     #a.execute(sql,x)
 
@@ -239,7 +239,10 @@ while True:
     conn.autocommit(True)      # 如果不加这句 ， 会一直查出同样的结果 
     
     #time.sleep(0.1)
-    time.sleep((1000-millSeondDiff)/1000)
+    if millSeondDiff<1000:
+        time.sleep((1000-millSeondDiff)/1000)
+    else:
+        time.sleep(0)
     startMillSecond = int(time.time() * 1000)
 
     x= x + datetime.timedelta(seconds=1)

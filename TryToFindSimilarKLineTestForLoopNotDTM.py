@@ -9,9 +9,10 @@ import datetime as dt
 import pandas as pd
 import seaborn as sns
 import time
+from math import*
 
 import sys
-#sys.argv += 'if1906_20190516 09:30:00 10:00:00'.split()      #debug 时用
+sys.argv += 'if1906_20190517 09:30:00 10:00:00'.split()      #debug 时用
 
 def normalizeArray(pa):                 # 归一化
     amin,amax = min(pa),max(pa)
@@ -27,31 +28,6 @@ def distance_cost_plot(distances):
     plt.grid()
     plt.colorbar()
     #plt.show()
-
-
-def path_cost(x, y, accumulated_cost, distances):
-    path = [[len(x)-1, len(y)-1]]
-    cost = 0
-    i = len(y)-1
-    j = len(x)-1
-    while i>0 and j>0:
-        if i==0:
-            j = j - 1
-        elif j==0:
-            i = i - 1
-        else:
-            if accumulated_cost[i-1, j] == min(accumulated_cost[i-1, j-1], accumulated_cost[i-1, j], accumulated_cost[i, j-1]):
-                i = i - 1
-            elif accumulated_cost[i, j-1] == min(accumulated_cost[i-1, j-1], accumulated_cost[i-1, j], accumulated_cost[i, j-1]):
-                j = j-1
-            else:
-                i = i - 1
-                j= j- 1
-        path.append([j, i])
-    path.append([0,0])
-    for [y, x] in path:
-        cost = cost +distances[x, y]
-    return path, cost   
 
 
 
@@ -107,45 +83,28 @@ while loopi < 20:
     normalizeArray(y)
     #print("original array normalize  Took %f seconds" % (time.time() - s))
 
-    distances = np.zeros((len(y), len(x)))    #建立一个 len(y) 行 , len(x) 列 的矩阵 ，并初始化为零
-    #print(distances)
-
+    distances=[]
     s = time.time()
-    for i in range(len(y)):
-        for j in range(len(x)):
-            distances[i,j] = (x[j]-y[i])**2    # 计算 y的每个点到 x的距离 
-
-    print("cal x y distance matrix use time %f seconds" % (time.time() - s))
-
-    #print(distances)        
-
-    #distance_cost_plot(distances)
-
-    # 另一个矩阵
-    accumulated_cost = np.zeros((len(y), len(x)))
-    accumulated_cost[0,0] = distances[0,0]
-
-    s = time.time()
-    for i in range(1, len(x)):
-        accumulated_cost[0,i] = distances[0,i] + accumulated_cost[0, i-1]    
-
-    for i in range(1, len(y)):
-        accumulated_cost[i,0] = distances[i, 0] + accumulated_cost[i-1, 0]    
-
-    for i in range(1, len(y)):
-        for j in range(1, len(x)):
-            accumulated_cost[i, j] = min(accumulated_cost[i-1, j-1], accumulated_cost[i-1, j], accumulated_cost[i, j-1]) + distances[i, j]    #这句是最慢的 
+    #print(len(y))
+    #print(len(x))
     
-    print("cal accumulate matrix use time %f seconds" % (time.time() - s))
+    
+    #for i in range(len(y)):
+        #try:      
+            #distances.append((x[i]-y[i])**2)    # 计算 x,y的每个相同 x坐标的点的距离 
+        #except ValueError:
+            #print('i is ',i)
+    #print("cal x y distance  use time %f seconds" % (time.time() - s))
+    #sumDis = np.sum(distances)
+    #print('sum distance value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , sumDis)
 
-    #distance_cost_plot(accumulated_cost)    不用画图
+    EuclideanDistance=sqrt(sum(pow(a-b,2) for a, b in zip(x, y)))
+    #print(distances)        
+    print('Euclidean distance value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , EuclideanDistance)
 
-    #找出最短路径 
-    s = time.time()
-    path, cost = path_cost(x, y, accumulated_cost, distances)
-    print("find shortest path use time %f seconds" % (time.time() - s))
+
     #print(path)
-    print('DTM value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , cost)
+
 
 
 
