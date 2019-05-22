@@ -9,7 +9,7 @@ def print_annotations(plt,tablename):
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")
 
-        plt.annotate(U'3626.2下多单， 犯了接飞刀的错误', xy=(dt.datetime(2019,5,9,9,50,9)+dt.timedelta(minutes=90) , 3626.2), xytext=(dt.datetime(2019,5,9,9,50,9)+dt.timedelta(minutes=70) , 3626.2-5),
+        plt.annotate(U'3626.2下多单， 犯了接飞刀的错误\n记住急跌的停止点不是做多点， 要等到2次低点', xy=(dt.datetime(2019,5,9,9,50,9)+dt.timedelta(minutes=90) , 3626.2), xytext=(dt.datetime(2019,5,9,9,50,9)+dt.timedelta(minutes=70) , 3626.2-5),
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")
 
@@ -34,7 +34,7 @@ def print_annotations(plt,tablename):
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")     
 
-        plt.annotate(U'3603下空单，被盯盘误导了，此时应该想有2个可能， 如果这次上涨是诱多， 此时距离启动仅仅5分钟， 多数人没反应过来， 多方都没机会进场，如果不是诱多， 做空更错', xy=(dt.datetime(2019,5,9,13,13,45) , 3603), xytext=(dt.datetime(2019,5,9,13,13,45)-dt.timedelta(minutes=20) , 3603-5),
+        plt.annotate(U'3603下空单，恨涨心态，因为之前的多单平早了\n此时应该想有2个可能， 如果这次上涨是诱多， 此时距离启动仅仅5分钟， 多数人没反应过来， 多方都没机会进场，如果不是诱多， 做空更错', xy=(dt.datetime(2019,5,9,13,13,45) , 3603), xytext=(dt.datetime(2019,5,9,13,13,45)-dt.timedelta(minutes=20) , 3603-5),
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")                    
 
@@ -76,6 +76,23 @@ def print_annotations(plt,tablename):
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
             va = "bottom", ha="center")                        
 
+    if tablename == 'if1906_20190516':
+         plt.annotate(U'3677.8下空单，\n错误， 是tips的 A型错误右图，这里不可以做空', xy=(dt.datetime(2019,5,16,10,7,11)+dt.timedelta(minutes=90) , 3677.8), xytext=(dt.datetime(2019,5,16,10,7,11)+dt.timedelta(minutes=70) , 3677.8-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")     
+              
+         plt.annotate(U'3673.4平空\n正确，及时挽回错误\n此时应该追多', xy=(dt.datetime(2019,5,16,10,8,38)+dt.timedelta(minutes=90) , 3673.4), xytext=(dt.datetime(2019,5,16,10,8,38)+dt.timedelta(minutes=110) , 3673.4-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'red'},
+            va = "bottom", ha="center") 
+
+         plt.annotate(U'3698下空单\n为什么这么执着的下空， 可能是因为今天是周四\n这次做空时机选的正确', xy=(dt.datetime(2019,5,16,10,43,50)+dt.timedelta(minutes=90) , 3698), xytext=(dt.datetime(2019,5,16,10,43,50)+dt.timedelta(minutes=70) , 3698-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")   
+         plt.annotate(U'(10:45:15) 3695.4平空\n错误，太小了,可能是怕午盘冲高', xy=(dt.datetime(2019,5,16,10,45,15)+dt.timedelta(minutes=90) , 3695.4), xytext=(dt.datetime(2019,5,16,10,45,15)+dt.timedelta(minutes=110) , 3695.4-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'red'},
+            va = "bottom", ha="center")             
+
+
     if tablename == 'if1906_20190517':
         plt.figtext(0,.89,'周五\n期初一空一多，if昨收小红盘，收盘最高， 收3708\n本日美国宣布对华为供应链禁令\n随波逐流单: 无\n主动逆市单: 2')
         plt.annotate(U'3681下多单，\n当时的想法是ic1906有反弹， 而 if 还没，此外就是收昨天影响\n昨天在 3680有几次反弹\n但是，即使抢反弹也应该等到下破3680整数以后', xy=(dt.datetime(2019,5,17,9,56,49)+dt.timedelta(minutes=90) , 3681), xytext=(dt.datetime(2019,5,17,9,56,49)+dt.timedelta(minutes=70) , 3681-10),
@@ -98,4 +115,30 @@ def print_annotations(plt,tablename):
 
         plt.annotate(U'3634.4平多单，\n', xy=(dt.datetime(2019,5,17,11,28,25)+dt.timedelta(minutes=90) , 3634.4), xytext=(dt.datetime(2019,5,17,11,28,25)+dt.timedelta(minutes=110) , 3634.4+20),
             arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")            
+
+    if tablename == 'if1906_20190520':
+        plt.figtext(0,.90,'周一，周日晚传出消息：刘士余自首\nGoogle遵守对华为的禁令，以后华为手机将不能使用 google产品包括gmail , youtube google store 等\n期初一空一多，if昨单边跌无反弹(所以今天有反弹)， 收362X\n随波逐流单: 无\n逆市单: 4')
+        plt.annotate(U'3579.2下多单，\n当时的想法是 看到 ic1906急涨， 而 if 还没完全跟上\n但是，这个位置是急跌停止点， 有反弹也不会太大', xy=(dt.datetime(2019,5,20,9,48,58)+dt.timedelta(minutes=90) , 3579.2), xytext=(dt.datetime(2019,5,20,9,48,58)+dt.timedelta(minutes=70) , 3579.2-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")
+        plt.annotate(U'3586.2平多单，\n正确', xy=(dt.datetime(2019,5,20,9,49,16)+dt.timedelta(minutes=90) , 3586.2), xytext=(dt.datetime(2019,5,20,9,49,16)+dt.timedelta(minutes=110) , 3586.2-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'red'},
+            va = "bottom", ha="center")
+        plt.annotate(U'3569.4下多单，\n理由是2次低点， 而且破了整数位', xy=(dt.datetime(2019,5,20,9,57,28)+dt.timedelta(minutes=90) , 3569.4), xytext=(dt.datetime(2019,5,20,9,57,28)+dt.timedelta(minutes=70) , 3569.4-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")      
+
+        plt.annotate(U'3579平多单，\n正确，不贪', xy=(dt.datetime(2019,5,20,9,58,22)+dt.timedelta(minutes=90) , 3579), xytext=(dt.datetime(2019,5,20,9,58,22)+dt.timedelta(minutes=110) , 3579-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'red'},
+            va = "bottom", ha="center")                 
+        plt.annotate(U'3556附近 全天最低点\n为什么这个时候又不抄底了？？？', xy=(dt.datetime(2019,5,20,10,25,16)+dt.timedelta(minutes=90) , 3556), xytext=(dt.datetime(2019,5,20,10,25,16)+dt.timedelta(minutes=110) , 3556-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'red'},
+            va = "bottom", ha="center")   
+
+        plt.annotate(U'3577下空单，\n收昨天影响， 以为尾盘还会跌\n这个位置做空很危险，因为3580的高点下午在此之前至少出现过3次(这也是做空的原因，思路被主力引导)，还做空是刻舟求剑', xy=(dt.datetime(2019,5,20,14,0,6), 3577), xytext=(dt.datetime(2019,5,20,14,0,6)-dt.timedelta(minutes=20) , 3577-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")              
+        plt.annotate(U'3573.4平空单，\n虽然过早-之后有3568的低点，但仍正确， 3580是高点是主力故意引导的，如果持这个观点至尾盘会被杀空', xy=(dt.datetime(2019,5,20,14,1,36), 3577), xytext=(dt.datetime(2019,5,20,14,1,36)+dt.timedelta(minutes=20) , 3573.4-10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'red'},
             va = "bottom", ha="center")            
