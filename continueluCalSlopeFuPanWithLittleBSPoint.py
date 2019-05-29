@@ -32,7 +32,7 @@ def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个
     return IGreater
 
 
-x = datetime.datetime(2019,5,29,9,30,1)
+x = datetime.datetime(2019,5,20,9,30,1)
 
 startRaiseTime = datetime.datetime(2000,1,1,9,30)
 startDropTime =  datetime.datetime(2000,1,1,9,30)
@@ -69,7 +69,7 @@ a=conn.cursor()
 startMillSecond = int(time.time() * 1000)
 
 #一次全取出
-sql = 'select happentime,b1 from if1906_20190529;' 
+sql = 'select happentime,b1 from if1906_20190520;' 
 a.execute(sql)
 data=a.fetchall()
 t=[]
