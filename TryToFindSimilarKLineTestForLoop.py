@@ -79,7 +79,7 @@ print('************************************************')
 
 loopi = 1 
 loopTableName = sys.argv[1]
-while loopi < 20:
+while loopi < 30:
     loopi = loopi + 1
     #sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from if1906_20190419'   + ' where time(happentime)<"'  + sys.argv[2]  + '";'
     sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "if%" and table_name < "' + loopTableName + '" order by create_time desc limit 1;'

@@ -1,3 +1,9 @@
+#  比较2条 k线 在起始和结束时间内  ，  用到了subplots    
+#  用法 ：  python f:/code/pythonscripts/compareKLine.py ic1906_20190521 09:50:00  10:30:00
+#  LIUYANG      2019/5/30
+
+
+
 import sys
 # import matplotlib.pylab as plt
 import matplotlib.pyplot as plt
