@@ -9,9 +9,23 @@ import datetime as dt
 import pandas as pd
 import seaborn as sns
 import time
+from statistics import mean 
 
 import sys
 #sys.argv += 'if1906_20190516 09:30:00 10:00:00'.split()      #debug 时用
+
+
+def divide_chunks(l, n): 
+      
+    # looping till length l 
+    for i in range(0, len(l), n):  
+        yield l[i:i + n] 
+
+
+def SplitArrayAndCalAver(arraySrc,arrayDst,n):
+    x = list(divide_chunks(arraySrc, n)) 
+    for j in range(len(x)):
+        arrayDst.append(mean(x[j]))
 
 def normalizeArray(pa):                 # 归一化
     amin,amax = min(pa),max(pa)
@@ -70,7 +84,14 @@ for result in data:
     x.append(result[0])
     s0.append(result[1])
 
+
+xOneMinAver= []
+
+SplitArrayAndCalAver(x,xOneMinAver,60)
+
 #print(x)
+
+x= xOneMinAver
 normalizeArray(x)
 print('orignal array have ' , len(x) , ' elements ')
 
@@ -104,6 +125,11 @@ while loopi < 30:
     #print(y)
 
     #s = time.time()
+
+    yOneMinAver = []
+    SplitArrayAndCalAver(y,yOneMinAver,60)
+    y=  yOneMinAver
+
     normalizeArray(y)
     #print("original array normalize  Took %f seconds" % (time.time() - s))
 
