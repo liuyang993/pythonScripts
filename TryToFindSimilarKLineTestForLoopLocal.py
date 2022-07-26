@@ -6,10 +6,10 @@ import matplotlib.dates as md
 import pymysql
 import numpy as np
 import datetime as dt
-import pandas as pd
+# import pandas as pd
 # import seaborn as sns
 import time
-from statistics import mean
+from statistics import mean 
 
 import sys
 #sys.argv += 'if1906_20190516 09:30:00 10:00:00'.split()      #debug 时用
@@ -29,12 +29,12 @@ def SplitArrayAndCalAver(arraySrc,arrayDst,n):
 
 def normalizeArray(pa):                 # 归一化
     amin,amax = min(pa),max(pa)
-    if amin == amax:
-        for j in range(len(pa)):   # TODO check if amax == amin to avoid devide by zero   
-            pa[j]=amin
-    else:
-        for j in range(len(pa)):   # TODO check if amax == amin to avoid devide by zero   
+    if amin!=amax:             # TODO check if amax == amin to avoid devide by zero   
+        for j in range(len(pa)):   
             pa[j]=(pa[j]-amin)/(amax-amin)
+    else:
+        for j in range(len(pa)):     
+            pa[j]=amin
 
 
 def distance_cost_plot(distances):
@@ -73,7 +73,7 @@ def path_cost(x, y, accumulated_cost, distances):
 
 
 
-conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture20210825')
+conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
 
 sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + sys.argv[1]  + ' where time(happentime)>"'  + sys.argv[2]  + '" and time(happentime)<"' + sys.argv[3]  + '";' 
@@ -96,8 +96,6 @@ SplitArrayAndCalAver(x,xOneMinAver,60)
 #print(x)
 
 x= xOneMinAver
-# print("x is ")
-# print(x)
 normalizeArray(x)
 print('orignal array have ' , len(x) , ' elements ')
 
@@ -106,25 +104,26 @@ print('************************************************')
 
 loopi = 1 
 loopTableName = sys.argv[1]
-while loopi < 300:
+while loopi < 400:
     loopi = loopi + 1
-    #sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else haentime end  from if1906_20190419'   + ' where time(happentime)<"'  + sys.argv[2]  + '";'
 
-    # sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "' + sys.argv[4] + '%" and table_name < "' + loopTableName + '" order by create_time desc limit 1;'
+    # sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "rb%" and table_name < "' + loopTableName + '"  order by table_name desc limit 1;'
 
-    # sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "' + sys.argv[4] + '%" and SUBSTRING_INDEX(table_name,"_",-1) < SUBSTRING_INDEX("' + loopTableName + '","_",-1) order by create_time desc limit 1;'
+    sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "ag%" and SUBSTRING_INDEX(table_name, "_", -1) < SUBSTRING_INDEX( "' + loopTableName + '" , "_", -1)  order by table_name desc limit 1;'
 
-    sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture20210825" and table_name like "' + sys.argv[4] + '%" and SUBSTRING_INDEX(table_name,"_",-1) < SUBSTRING_INDEX("' + loopTableName + '","_",-1) order by SUBSTRING_INDEX(table_name,"_",-1) desc limit 1;'
-
-
-    # print(sql)
+    #print(sql)
     a.execute(sql)
     data=a.fetchall()
     for result in data:
+        # print(result[0])
         loopTableName = result[0]
     print(loopTableName)
 
     sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + loopTableName  + ' where time(happentime)>"'  + sys.argv[2]  + '" and time(happentime)<"' + sys.argv[3]  + '";' 
+
+    # sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + loopTableName  + ' where time(happentime)> \"21:00:00\" and time(happentime)<\"22:59:59\";'
+
+
     #print(sql)
     a.execute(sql)
     data=a.fetchall()
@@ -189,10 +188,5 @@ while loopi < 300:
     path, cost = path_cost(x, y, accumulated_cost, distances)
     #print("find shortest path use time %f seconds" % (time.time() - s))
     #print(path)
-
-    print('DTM value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , cost)
-    if cost<1:
+    if cost<0.8:
         print('DTM value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , cost)
-
-
-

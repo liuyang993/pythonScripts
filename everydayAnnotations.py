@@ -1,6 +1,79 @@
 import datetime as dt
 
 def print_annotations(plt,tablename):
+    if tablename == 'if1903_20190211':
+        plt.figtext(0,.93,'周一 春节后第一天\n期初三空二多，if昨收光头阳， 收3266\n随波逐流单: 无\n逆市单: 1 ')
+
+        plt.annotate(U'09：31：35  3258下空单，前一天尾盘有一个 3266的空单，因为当时觉得光头阳不好，\n是春节前强行共克时艰，春节期间美股连跌三天强化了这种感觉', xy=(dt.datetime(2019,2,11,9,31,35)+dt.timedelta(minutes=90) , 3258), xytext=(dt.datetime(2019,2,11,9,31,35)+dt.timedelta(minutes=70) , 3258+10),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")       
+
+        plt.annotate(U'10：46：33  3277下逆市空单，顽固， 老毛病， 觉得在上次空单的20个点以上空没问题\n此时已三空单， 3266 3258 3277 ，此后无操作， 为什么不止损？？？', xy=(dt.datetime(2019,2,11,10,46,33)+dt.timedelta(minutes=90) , 3277), xytext=(dt.datetime(2019,2,11,10,46,33)+dt.timedelta(minutes=70) , 3277+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")   
+
+        plt.annotate(U'09：51：46  3253.8早盘2次探底，和2019-06-10一样', xy=(dt.datetime(2019,2,11,9,51,46)+dt.timedelta(minutes=90) , 3253.8), xytext=(dt.datetime(2019,2,11,9,51,46)+dt.timedelta(minutes=70) , 3253.8-5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")                               
+
+        plt.annotate(U'13：37：52 下午低点 3284.4 ，强走势特征，急跌点能快速反弹，没有2次探底过程,和2019-06-11 下午 3670低点一样' ,  xy=(dt.datetime(2019,2,11,13,37,52),3284.4), xytext=(dt.datetime(2019,2,11,13,37,52)+dt.timedelta(minutes=10),3284.4-5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")
+    if tablename == 'if1903_20190212':
+        plt.figtext(0,.93,'周二 昨大涨60点 \n期初三空 均价 326X，if昨收3309 高 3315.8\n随波逐流单: 无\n逆市单: ')   
+
+        plt.annotate(U'10：10：13  早盘2次低点 3305.4 强势特征，坚决不回到3300以下 \n不让昨天的大多数空单得利，同时稳住昨天的多方', xy=(dt.datetime(2019,2,12,10,10,13)+dt.timedelta(minutes=90) , 3305.4), xytext=(dt.datetime(2019,2,12,10,10,13)+dt.timedelta(minutes=110) , 3305.4-5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")               
+
+        plt.annotate(U'11：24：57  早盘高点 3339 \n从2月1日到今天，已经连涨3天， 这个时候做多的是这三天最迟钝的多方\n而且贪婪，期望和昨天一样午盘冲高', xy=(dt.datetime(2019,2,12,11,24,57)+dt.timedelta(minutes=90) , 3339), xytext=(dt.datetime(2019,2,12,11,24,57)+dt.timedelta(minutes=70) , 3339+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")      
+
+        plt.annotate(U'13：41：05 3322.4 平一空' ,  xy=(dt.datetime(2019,2,12,13,41,5),3322.4), xytext=(dt.datetime(2019,2,12,13,41,5)+dt.timedelta(minutes=10),3322.4-5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")        
+
+        plt.annotate(U'14：04：11 3329 开一空\n此后无操作， 收盘仍是三空' ,  xy=(dt.datetime(2019,2,12,14,4,11),3329), xytext=(dt.datetime(2019,2,12,14,4,11)-dt.timedelta(minutes=10),3329+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")  
+
+    if tablename == 'if1903_20190213':
+         plt.figtext(0,.93,'周三 此前已三连阳 昨涨约30点 \n期初三空 if昨收3333 高 3339\n传言3月1日贸易战最后期限可能延长，且美国昨大涨 \n随波逐流单: 无\n逆市单: ') 
+
+         plt.annotate(U'09：30：47  早盘略有高开，觉得不能再这么硬抗空单损失 \n所以在 3333.4把三空单都平了,但是为什么不转多', xy=(dt.datetime(2019,2,13,9,30,47)+dt.timedelta(minutes=90) , 3333.4), xytext=(dt.datetime(2019,2,13,9,30,47)+dt.timedelta(minutes=150) , 3333.4),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")         
+         plt.annotate(U'09：52：22  3342开一空 \n错误，把小高点当真， 而且日内开盘还不到半小时， 已经三次触及334X\n此时真实略有回落然后突破的时机，做空太蠢了', xy=(dt.datetime(2019,2,13,9,52,22)+dt.timedelta(minutes=90) , 3343), xytext=(dt.datetime(2019,2,13,9,52,22)+dt.timedelta(minutes=70) , 3343+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")  
+
+         plt.annotate(U'10：12：08  挂一个预埋 \n当>3360时， 3361.4 空一单 \n没成， 也正是这个没成的预埋使空的思想又成为主流', xy=(dt.datetime(2019,2,13,10,12,8)+dt.timedelta(minutes=90) , 3360), xytext=(dt.datetime(2019,2,13,10,12,8)+dt.timedelta(minutes=70) , 3360+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")  
+
+         plt.annotate(U'10：32：47  3353开一空 \n错误，以为既然在 3360没空到， 现在亡羊补牢', xy=(dt.datetime(2019,2,13,10,32,47)+dt.timedelta(minutes=90) , 3353), xytext=(dt.datetime(2019,2,13,10,32,47)+dt.timedelta(minutes=70) , 3353+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")         
+         plt.annotate(U'10：52：56  3358平一空 \n觉得之前的空单可能错了， 也怕中午冲', xy=(dt.datetime(2019,2,13,10,52,56)+dt.timedelta(minutes=90) , 3358), xytext=(dt.datetime(2019,2,13,10,52,56)+dt.timedelta(minutes=110) , 3353+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'red'},
+            va = "bottom", ha="center")      
+         plt.annotate(U'11：12：34  3355.6开一空 \n错误，又觉得还是该空', xy=(dt.datetime(2019,2,13,11,12,34)+dt.timedelta(minutes=90) , 3355.6), xytext=(dt.datetime(2019,2,13,11,12,34)+dt.timedelta(minutes=70) , 3355.6+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")    
+         plt.annotate(U'11：24：50  3364.8开一空 \n错， 认为周三会是一个冲高回落的局面， 上午收盘见最高点， \n但即使这样， 现在也还没到收盘，此时3空仓', xy=(dt.datetime(2019,2,13,11,24,50)+dt.timedelta(minutes=90) , 3364.8), xytext=(dt.datetime(2019,2,13,11,24,50)+dt.timedelta(minutes=70) , 3364.8+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center") 
+         plt.annotate(U'13：23：09 3372.4 平2空' ,  xy=(dt.datetime(2019,2,13,13,23,9),3372.4), xytext=(dt.datetime(2019,2,13,13,23,9)+dt.timedelta(minutes=10),3372.4 - 5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'red'},
+            va = "bottom", ha="center")       
+         plt.annotate(U'13：47：08  3383开一空 \n死心不改', xy=(dt.datetime(2019,2,13,13,47,8), 3383), xytext=(dt.datetime(2019,2,13,13,47,8)+dt.timedelta(minutes=10) , 3383+5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'blue'},
+            va = "bottom", ha="center")   
+         plt.annotate(U'14：21：11 3405.2 平2空' ,  xy=(dt.datetime(2019,2,13,14,21,11),3405), xytext=(dt.datetime(2019,2,13,14,21,11)+dt.timedelta(minutes=10),3405 - 5),
+            arrowprops={'arrowstyle': '->', 'lw': 4, 'color': 'red'},
+            va = "bottom", ha="center")                                                                                                                                                                
+
     if tablename == 'if1906_20190509':
         plt.figtext(0,.93,'周四\n期初一空一多，if昨收长上影线，冲高回落， 收3652\n随波逐流单: 无\n逆市单: 4')
 

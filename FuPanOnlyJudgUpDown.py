@@ -35,8 +35,14 @@ def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个
                 IGreater=IGreater+1
     return IGreater
 
+noontag = False
 
-x = datetime.datetime(2019,6,18,9,30,1)
+
+x = datetime.datetime(2018,12,19,9,30,1)
+y = datetime.datetime(2018,12,19,10,15,0)
+w = datetime.datetime(2018,12,19,10,30,0)
+z = datetime.datetime(2018,12,19,15)
+
 
 startRaiseTime = datetime.datetime(2000,1,1,9,30)
 startDropTime =  datetime.datetime(2000,1,1,9,30)
@@ -63,7 +69,8 @@ class State(Enum):
 
 currentState = State.null
 
-initRecords =4    #  1 minutes 
+initRecords =5    #  1 minutes 
+#initStart =1
 
 qSlope= queue.Queue(maxsize=10)   # 10 个元素的队列 
 qSlope.empty()
@@ -73,15 +80,14 @@ a=conn.cursor()
 startMillSecond = int(time.time() * 1000)
 
 #一次全取出
-# sql = 'select happentime,b1 from if1906_20190618;' 
-
-sql = 'select happentime,b1 from oi2109_20210331;' 
+sql = 'select happentime,b1 from if1901_20181219;' 
 a.execute(sql)
 data=a.fetchall()
 t=[]
 s=[]
 for result in data:
-    t.append(result[0].timestamp())
+    #t.append(result[0].timestamp())
+    t.append(result[0])
     s.append(result[1])
  
 #tCpy=[] 
@@ -93,7 +99,7 @@ while True:
     
     i=0
     isum=0
-    for k in range(0,initRecords,1):
+    for k in range(1,initRecords,1):
         if i!=2:
             isum= isum + s[k]
             i = i +1 
@@ -103,6 +109,7 @@ while True:
                 i=0
                 isum=0
 
+    #initStart = initStart + 4
     normalizeArray(tCpy)
     normalizeArray(sCpy)
 
@@ -127,29 +134,32 @@ while True:
     ii=0
     if qSlope.full():            # 队列满了就比较
         ii=compareQueue(qSlope)
+    else:
+        initRecords=initRecords+2
+        continue
     #print('ii is ',ii)
 
     if ii>=8 and currentState != State.beginRaise :
-        print("when ", datetime.datetime.fromtimestamp(t[k+1]) , ' at ' ,s[k+1] , " curve begin raise " , 'previous drop count = ' , dropCount)
+        print("when ", t[k+1] , ' at ' ,s[k+1] , " curve begin raise " , 'previous drop count = ' , dropCount)
         dropCount=0
         currentState=State.beginRaise
         #for elem in list(qSlope.queue):
             #print(elem)
         print('i is ',ii)
-        startRaiseTime = datetime.datetime.fromtimestamp(t[k+1])
+        startRaiseTime = t[k+1]
         if startRaiseTime < startDropTime + datetime.timedelta(minutes=1):
             print(" find real buy point ")        
         #initRecords=initRecords+2
     #if currentState == State.beginRaise:
         #print("when ", datetime.datetime.fromtimestamp(t[0]) , ' at ' , s[0], ", slope is  " ,"%.6f" % slope)
     if ii<=3 and ii!=0 and currentState != State.beginDrop :                        # s[0]<s[1]
-        print("when ", datetime.datetime.fromtimestamp(t[k+1]) , ' at ' ,s[k+1] , " curve begin drop " , 'previous raise count = ',raiseCount)
+        print("when ", t[k+1] , ' at ' ,s[k+1] , " curve begin drop " , 'previous raise count = ',raiseCount)
         raiseCount=0
         currentState=State.beginDrop
         #for elem in list(qSlope.queue):
             #print(elem)
         print('i is ',ii)
-        startDropTime = datetime.datetime.fromtimestamp(t[k+1])
+        startDropTime = t[k+1]
         if startDropTime < startRaiseTime + datetime.timedelta(minutes=1):
             print(" find real sell point ")
     if ii<=3 and ii!=0 and currentState == State.beginDrop :
@@ -167,7 +177,7 @@ while True:
         #print(elem)    
 
     #print('i is ',ii)
-    initRecords=initRecords+2 
+    
 
     millSeondDiff = int(time.time() * 1000) - startMillSecond
     #print(datetime.datetime.now())
@@ -235,6 +245,18 @@ while True:
 
     #time.sleep(5)    
     x= x + datetime.timedelta(seconds=1)
+    #print(x)
+    if (t[k+1] > y) and (t[k+1] < w) :
+        if noontag == True:
+            continue
+        noontag = True
+        print("noon rest time")
+        continue
+    else:
+        #print("trade time")
+        initRecords=initRecords+2
+        
+        
     #print(x)
     #conn.close()    #very important , remember MUST close 
     #plt.plot(t, s)
