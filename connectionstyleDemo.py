@@ -1,3 +1,8 @@
+#learn from https://matplotlib.org/3.4.2/gallery/userdemo/connectionstyle_demo.html
+
+
+
+
 import matplotlib.pyplot as plt
 
 
