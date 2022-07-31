@@ -1,4 +1,8 @@
-# 要实现的功能  1--- 实时描述图形 
+# 要实现的功能  1--- 实时描述图形 当前是涨势还是跌势， 标出转折点， 预测反弹和下跌点位， 
+
+
+# 资料 ： https://phdinds-aim.github.io/time_series_handbook/02_LinearForecastingTrendandMomentumForecasting/02_LinearTrendandMomentumForecasting.html 
+
 
 
 import sys
@@ -11,68 +15,15 @@ import datetime
 import time
 import queue
 # from datetime import datetime as dt
-
+import pandas as pd
 
 import pandas as pd
 import matplotlib.pyplot as plt
-df = pd.read_csv('https://raw.githubusercontent.com/selva86/datasets/master/a10.csv', parse_dates=['date'], index_col='date')
 
-
-firstTop =0
 t=[]
 s=[]
 
-qSlope= queue.Queue(maxsize=240)   # 10 个元素的队列 
-qSlope.empty()
-
-
-
-# t= queue.Queue(maxsize=10)   # 10 个元素的队列 
-# t.empty()
-
-
-# s= queue.Queue(maxsize=10)   # 10 个元素的队列 
-# s.empty()
-
-
-
-# def compareQueue(L):    # 计算10个元素的队列里， 后一个比前一个数值大情况有多少 
-#     LofQ = list(L.queue)
-#     IGreater = 0 
-#     for k in range(0,len(LofQ),1):
-#         #print(LofQ[k])
-#         if k!=len(LofQ)-1:
-#             if LofQ[k]<LofQ[k+1]:
-#                 IGreater=IGreater+1
-#         if k==len(LofQ)-1:
-#             if LofQ[k-1]<LofQ[k]:
-#                 IGreater=IGreater+1
-#     return IGreater
-
-
-def compareQueue(L):    # 计算10个元素的队列里，是不是最大值出现在中间， 如果是， 说明找到了值的顶部
-    LofQ = list(L.queue)
-    max_item = max(LofQ)
-    maxIndex = LofQ.index(max_item)
-
-    min_item = min(LofQ)
-    minIndex = LofQ.index(min_item)
-
-    str=''
-
-    # if maxIndex==9 or maxIndex==10 :
-    if maxIndex==120 :
-        str='top'
-        return  str,maxIndex
-    if minIndex==120 :
-        str='bottom'
-        return  str,minIndex
-    else:
-        str='not'
-        return  str,0
-        
-
-
+df = pd.DataFrame( columns=['date','value'])
 
 x = datetime.datetime(2018,12,21,9,30,2)
 
@@ -99,44 +50,14 @@ while True:
         #     s.put(result[1])
         t.append(result[0].timestamp())
         s.append(result[1])
-        print(result[0])
-        print(result[1])
-
+        # print(result[0])
+        # print(result[1])
+        df=df.append({'date':result[0],'value':result[1]}, ignore_index=True)
 
     # print(t)
     # print(s)
     #print(s[-1])
-
-
-
-    if len(t)>10:
-        slope, intercept, r_value, p_value, std_err = stats.linregress(t[-10:],s[-10:])
-        print("time  is ", result[0], " price is " , result[1] , " current slope is " , "%.6f" % slope )
-
-        if qSlope.full():  # 如果满了 ，最早的出队
-            qSlope.get()
-            qSlope.put("{:.4f}".format(slope))
-        else:
-            qSlope.put("{:.4f}".format(slope))
-        # print(list(qSlope.queue))
-
-        if qSlope.full():            # 队列满了就比较
-            strRtn,ii=compareQueue(qSlope)
-            if ii>0:
-                if strRtn=='top':
-                    # print("time  is ", result[0], " price is " , result[1] , " current slope is " , "%.6f" % slope )
-                    # print(ii)
-                    # print("time  is ", datetime.datetime.fromtimestamp(t[-ii:]), " price is " , s[-ii:] , " find top value "  )
-                    print("time  is ", datetime.datetime.fromtimestamp(t[-ii]), " price is " , s[-ii] , " find top value , and current time is " , x , 'current price is ' , s[-1] )
-
-                    # print(list(qSlope.queue))
-                if strRtn=='bottom':
-                    # print("time  is ", result[0], " price is " , result[1] , " current slope is " , "%.6f" % slope )
-                    # print(ii)
-                    # print("time  is ", datetime.datetime.fromtimestamp(t[-ii:]), " price is " , s[-ii:] , " find top value "  )
-                    print("time  is ", datetime.datetime.fromtimestamp(t[-ii]), " price is " , s[-ii] , " find bottom value , and current time is " , x , 'current price is ' , s[-1] )
-
-                    # print(list(qSlope.queue))
+    print(df.head(1000))
 
 
     # #print('Maximum is: ', max(s) , " and it position is ", s.index(max(s)))
