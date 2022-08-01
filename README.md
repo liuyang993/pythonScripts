@@ -8,6 +8,8 @@
    偏导数 partial derivative  <br>
    单增函数  increasing function <br>
    线性规划  Linear Programming <br>
+   有监督机器学习  Supervised Learning <br>
+   
    
    
    
