@@ -45,7 +45,7 @@ class DynamicUpdate():
         conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
         a=conn.cursor()
         # sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime) < 23 and hour(happentime) >=21;'
-        sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime) < 23 and hour(happentime) >=21;'
+        sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime) < 15 and hour(happentime) >=9;'
         a.execute(sql)
         data=a.fetchall()
         conn.commit()
@@ -55,12 +55,12 @@ class DynamicUpdate():
         self.on_running(xdata, ydata)
         time.sleep(1)
 
-        x = datetime.datetime(2022,7,19,23,30,2)
+        x = datetime.datetime(2022,8,1,15,0,2)
         while True: 
             # conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
             a=conn.cursor()
             # sql = 'select happentime,lastprice from oi2209_20220627 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit 2;'
-            sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where happentime<=%s and hour(happentime)>=21  order by happentime desc limit 2;'
+            sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where happentime<=%s and hour(happentime)>=9  order by happentime desc limit 2;'
             print(x)
             a.execute(sql,x)
             #print(sql)

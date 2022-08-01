@@ -2,7 +2,14 @@
 
 
 # 资料 ： https://phdinds-aim.github.io/time_series_handbook/02_LinearForecastingTrendandMomentumForecasting/02_LinearTrendandMomentumForecasting.html 
+#         https://blog.csdn.net/youcans/article/details/117702996   
 
+#    怎么画蜡烛图 -----  https://levelup.gitconnected.com/five-useful-pandas-scripts-for-financial-time-series-plots-99693c4025b2 
+
+#  怎么判断dataframe 的 trend ： 
+    # https://stackoverflow.com/questions/71031226/calculating-trend-per-customer-level-in-python-dataframe 
+    # https://dev.to/acnice/sales-trend-analysis-with-pandas-1bcm
+    
 
 
 import sys
