@@ -37,8 +37,9 @@ x = datetime.datetime(2018,12,21,9,30,2)
 #for i in range(1500):
 conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
-while True:
-    # print("-----------------")
+# while True:
+while x < datetime.datetime(2018,12,21,9,32,2):
+    print("-----------------")
     a=conn.cursor()
     sql = 'select happentime,lastprice from if1901_20181221 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit 2 ;'
     a.execute(sql,x)
@@ -84,7 +85,11 @@ while True:
     
     #slope, intercept, r_value, p_value, std_err = stats.linregress(t,s)
     #print("when ", datetime.datetime.fromtimestamp(t[0]) , " 5 minutes slope is " ,"%.6f" % slope, " and that time 's price is ", s[0])
-    time.sleep(5)
+    time.sleep(0.1)
     x= x + datetime.timedelta(seconds=1)
 conn.close()    #very important , remember MUST close 
+print('now will print description')
+print(df['value'].describe())
+
+
     
