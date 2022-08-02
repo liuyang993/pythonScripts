@@ -19,7 +19,15 @@
    #### 名词 
    classifier  分类器 (分类器有很多 包括决策树等等)<br>
    train_test_split 数据分组 分成训练组和验证组<br>
-   
+   X_train, X_test, y_train, y_test 到底是什么意思 <br>
+   <p >X_train, X_test, y_train, y_test = train_test_split 
+   X_train 是从样本中取样，取多少由 test_size决定，如果 test_size = 0.4，
+   那就是取百分之60</p>
+   <p> X_test就是剩下的百分之40样本，这部分样本不参与训练， 而一旦训练得出一个函数，用这个函数代入 X_test的值，检查函数的结果与真实值之间的差距，并由此判断训练是否准确</p>
+   <p> y_train 就是 X_train的正确值 </p>
+   </p>  y_test  是 x_train 的正确值 </p>
+   <p>  random_state  随机数种子控制每次划分训练集和测试集的模式，其取值不变时划分得到的结果一模一样，其值改变时，划分得到的结果不同。若不设置此参数，则函数会自动选择一种随机模式，得到的结果也就不同。</p>
+
 
    #### 资料文档
    https://stackabuse.com/overview-of-classification-methods-in-python-with-scikit-learn/  <br>
@@ -43,3 +51,8 @@
    <p>You cannot remove files from existing commits: those commits are frozen for all time. You can make sure you do not add new files to future commits, though. Simply remove the files now, with git rm -r --cached __pycache__, and list __pycache__ or __pycache__/ in your .gitignore (creating this .gitignore file if needed). Do this for each __pycache__ directory; use your OS's facilities to find these (e.g., find . -name __pycache__ -type d). Then git add .gitignore and git commit to commit the removal. </p>
    
    
+   ## stackoverflow 专家
+   
+   ManojK  python AI <br>
+   
+
