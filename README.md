@@ -35,4 +35,11 @@
 
    
    
+   ## 备注 
+
+   ### 删除 pythoncache文件夹， 在github ，来自 https://stackoverflow.com/questions/71922766/removing-pycache-from-git-repository
+   
+
+   <p>You cannot remove files from existing commits: those commits are frozen for all time. You can make sure you do not add new files to future commits, though. Simply remove the files now, with git rm -r --cached __pycache__, and list __pycache__ or __pycache__/ in your .gitignore (creating this .gitignore file if needed). Do this for each __pycache__ directory; use your OS's facilities to find these (e.g., find . -name __pycache__ -type d). Then git add .gitignore and git commit to commit the removal. </p>
+   
    
