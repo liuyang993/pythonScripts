@@ -10,7 +10,15 @@ import queue
 
 # 找出极值   https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/22640362#22640362
          #  https://github.com/Rgveda/GolemQ/tree/45beff9b1499da52042466eb207cffc7a1c1e2a3/analysis    中国人写的量化库
-            
+
+# class real_time_peak_detection(): 这种方法要先定义一个threshold，临界值， 但是实际情况中，上哪找这个临界值去。谁知道应该定义多少合适 
+
+
+def trendline(index,data, order=1):
+    coeffs = np.polyfit(index, list(data), order)
+    slope = coeffs[-2]
+    return float(slope)
+
 
 class real_time_peak_detection():
     def __init__(self, array, lag, threshold, influence):
@@ -97,41 +105,41 @@ def thresholding_algo(y, lag, threshold, influence):
 
 
 
-y = np.array([1,1,1.1,1,0.9,1,1,1.1,1,0.9,1,1.1,1,1,0.9,1,1,1.1,1,1,1,1,1.1,0.9,1,1.1,1,1,0.9,
-       1,1.1,1,1,1.1,1,0.8,0.9,1,1.2,0.9,1,1,1.1,1.2,1,1.5,1,3,2,5,3,2,1,1,1,0.9,1,1,3,
-       2.6,4,3,3.2,2,1,1,0.8,4,4,2,2.5,1,1,1])
+# y = np.array([1,1,1.1,1,0.9,1,1,1.1,1,0.9,1,1.1,1,1,0.9,1,1,1.1,1,1,1,1,1.1,0.9,1,1.1,1,1,0.9,
+#        1,1.1,1,1,1.1,1,0.8,0.9,1,1.2,0.9,1,1,1.1,1.2,1,1.5,1,3,2,5,3,2,1,1,1,0.9,1,1,3,
+#        2.6,4,3,3.2,2,1,1,0.8,4,4,2,2.5,1,1,1])
 
-# Settings: lag = 30, threshold = 5, influence = 0
-lag = 30
-threshold = 5
-influence = 0
+# # Settings: lag = 30, threshold = 5, influence = 0
+# lag = 30
+# threshold = 5
+# influence = 0
 
-# Run algo with settings from above
-result = thresholding_algo(y, lag=lag, threshold=threshold, influence=influence)
+# # Run algo with settings from above
+# result = thresholding_algo(y, lag=lag, threshold=threshold, influence=influence)
 
-# Plot result
-plt.subplot(211)
-plt.plot(np.arange(1, len(y)+1), y)
+# # Plot result
+# plt.subplot(211)
+# plt.plot(np.arange(1, len(y)+1), y)
 
-plt.plot(np.arange(1, len(y)+1),
-           result["avgFilter"], color="cyan", lw=2)
+# plt.plot(np.arange(1, len(y)+1),
+#            result["avgFilter"], color="cyan", lw=2)
 
-plt.plot(np.arange(1, len(y)+1),
-           result["avgFilter"] + threshold * result["stdFilter"], color="green", lw=2)
+# plt.plot(np.arange(1, len(y)+1),
+#            result["avgFilter"] + threshold * result["stdFilter"], color="green", lw=2)
 
-plt.plot(np.arange(1, len(y)+1),
-           result["avgFilter"] - threshold * result["stdFilter"], color="green", lw=2)
+# plt.plot(np.arange(1, len(y)+1),
+#            result["avgFilter"] - threshold * result["stdFilter"], color="green", lw=2)
 
-plt.subplot(212)
-plt.step(np.arange(1, len(y)+1), result["signals"], color="red", lw=2)
-plt.ylim(-1.5, 1.5)
-plt.show()
-
-
+# plt.subplot(212)
+# plt.step(np.arange(1, len(y)+1), result["signals"], color="red", lw=2)
+# plt.ylim(-1.5, 1.5)
+# plt.show()
 
 
-# lag = 3
-# threshold = 25
+
+
+# lag = 30
+# threshold = 5
 # influence = 0
 
 
@@ -142,10 +150,9 @@ plt.show()
 #         4,30,30.2,20,1,10,00.8,40,4,20,
 #     ]
 
-# arrini = [
-#         10.1,10,1,10.1
-#     ]    
-
+# arrini = [1,1,1.1,1,0.9,1,1,1.1,1,0.9,1,1.1,1,1,0.9,1,1,1.1,1,1,1,1,1.1,0.9,1,1.1,1,1,0.9,
+#        1,1.1,1,1,1.1,1,0.8,0.9,1,1.2,0.9,1,1,1.1,1.2,1,1.5,1,3,2,5,3,2,1,1,1,0.9,1,1,3,
+#        2.6,4,3,3.2,2,1,1,0.8,4,4,2,2.5,1,1,1]
 # y = [
 #         1,10,60.1,10,00.9,10,1,10.1,10,00.9,
 #         1,10.1,10,1,00.9,10,1,10.1,10,1,
@@ -163,107 +170,132 @@ plt.show()
 # while num < len(y):
 #     res = rtpd.thresholding_algo(y[num])
 #     print(y[num],res)
-#     time.sleep(5)
+#     print('len is ')
+#     print(len(rtpd.y))
+    
 #     num += 1
+#     time.sleep(5)
 
 
 
-# firstTop =0
-# t=[]
-# s=[]
+firstTop =0
+t=[]
+s=[]
 
-# qSlope= queue.Queue(maxsize=60)   # 10 个元素的队列 
-# qSlope.empty()
+xx=[]
+yy=[]
 
 
-# def compareQueue(L):    # 计算10个元素的队列里，是不是最大值出现在中间， 如果是， 说明找到了值的顶部
-#     LofQ = list(L.queue)
-#     max_item = max(LofQ)
-#     maxIndex = LofQ.index(max_item)
+qSlope= queue.Queue(maxsize=60)   # 10 个元素的队列 
+qSlope.empty()
 
-#     min_item = min(LofQ)
-#     minIndex = LofQ.index(min_item)
 
-#     str=''
+def compareQueue(L):    # 计算10个元素的队列里，是不是最大值出现在中间， 如果是， 说明找到了值的顶部
+    LofQ = list(L.queue)
+    max_item = max(LofQ)
+    maxIndex = LofQ.index(max_item)
 
-#     # if maxIndex==9 or maxIndex==10 :
-#     if maxIndex==30 :
-#         str='top'
-#         return  str,maxIndex
-#     if minIndex==20 :
-#         str='bottom'
-#         return  str,minIndex
-#     else:
-#         str='not'
-#         return  str,0
+    min_item = min(LofQ)
+    minIndex = LofQ.index(min_item)
+
+    str=''
+
+    # if maxIndex==9 or maxIndex==10 :
+    if maxIndex==30 :
+        str='top'
+        return  str,maxIndex
+    if minIndex==20 :
+        str='bottom'
+        return  str,minIndex
+    else:
+        str='not'
+        return  str,0
         
 
 
 
-# conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
-# a=conn.cursor()
+conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
+a=conn.cursor()
 
-# sql = 'select happentime,lastprice from pta2209_20220725 where hour(happentime)>=9 and hour(happentime)<=15 ;'
-# a.execute(sql)
-# data=a.fetchall()
-# conn.commit()
+sql = 'select happentime,lastprice from pta2209_20220725 where hour(happentime)>=21 and hour(happentime)<=23 ;'
+a.execute(sql)
+data=a.fetchall()
+conn.commit()
 
-# # print(data[0][0])
-# # print(data[0][1])
-# # print(data[1][0])
-# # print(data[1][1])
+# print(data[0][0])
+# print(data[0][1])
+# print(data[1][0])
+# print(data[1][1])
 
 
 # lag = 30
 # threshold = 5000
 # influence = 0
 
-# iii=0
-# while True:
+iii=0
+jjj=0
+while True:
 
-#     t.append(data[iii][0].timestamp())
-#     # t.append(data[ii][0])
-#     s.append((data[iii][1] + data[iii+1][1])/2)
+    t.append(data[iii][0].timestamp())
+    # t.append(data[ii][0])
+    s.append((data[iii][1] + data[iii+1][1])/2)
+
+    if jjj>10:
+        # slope, intercept, r_value, p_value, std_err = stats.linregress(t[-iii:],s[-iii:])
+        # print(slope)
+        # print(s)
+        print('------------------')
+        # time.sleep(10)
+        print(s[-jjj:])
+        resultent=trendline(t[-jjj:],s[-jjj:])
+        print(resultent)  
+        
+        jjj=0
+        if not xx:
+            xx.append(10)
+        else:
+            xx.append(xx[-1] + 10 )
+        yy.append(resultent) 
+        print(xx)
+        print(yy)
+        time.sleep(1)
+        
+
+    # print(t)
+    # print(s)
+    iii=iii+2 
+    jjj=jjj+1
+    # time.sleep(5)
+
+    # if len(t)>60:
+    #     # rtpd = real_time_peak_detection(s, lag, threshold, influence)
+    #     # print(rtpd.thresholding_algo((data[iii][1] + data[iii+1][1])/2))
 
 
+    #     slope, intercept, r_value, p_value, std_err = stats.linregress(t[-60:],s[-60:])
+    #     # print("time  is ", result[0], " price is " , result[1] , " current slope is " , "%.6f" % slope )
 
+    #     if qSlope.full():  # 如果满了 ，最早的出队
+    #         qSlope.get()
+    #         qSlope.put("{:.4f}".format(slope))
+    #     else:
+    #         qSlope.put("{:.4f}".format(slope))
+    #     # print(list(qSlope.queue))
 
+    #     if qSlope.full():            # 队列满了就比较
+    #         strRtn,ii=compareQueue(qSlope)
+    #         if ii>0:
+    #             if strRtn=='top':
+    #                 # print("time  is ", result[0], " price is " , result[1] , " current slope is " , "%.6f" % slope )
+    #                 # print(ii)
+    #                 # print("time  is ", datetime.datetime.fromtimestamp(t[-ii:]), " price is " , s[-ii:] , " find top value "  )
+    #                 print("time  is ", datetime.datetime.fromtimestamp(t[-ii]), " price is " , s[-ii] , " find top value , and current time is " , datetime.datetime.fromtimestamp(t[-1]) , 'current price is ' , s[-1] )
 
+    #                 # print(list(qSlope.queue))
+    #             if strRtn=='bottom':
+    #                 # print("time  is ", result[0], " price is " , result[1] , " current slope is " , "%.6f" % slope )
+    #                 # print(ii)
+    #                 # print("time  is ", datetime.datetime.fromtimestamp(t[-ii:]), " price is " , s[-ii:] , " find top value "  )
+    #                 print("time  is ", datetime.datetime.fromtimestamp(t[-ii]), " price is " , s[-ii] , " find bottom value , and current time is " ,datetime.datetime.fromtimestamp(t[-1]) , 'current price is ' , s[-1] )
 
-#     # print(t)
-#     # print(s)
-#     iii=iii+2 
-#     # time.sleep(5)
-
-#     if len(t)>60:
-#         rtpd = real_time_peak_detection(s, lag, threshold, influence)
-#         print(rtpd.thresholding_algo((data[iii][1] + data[iii+1][1])/2))
-
-
-#         slope, intercept, r_value, p_value, std_err = stats.linregress(t[-60:],s[-60:])
-#         # print("time  is ", result[0], " price is " , result[1] , " current slope is " , "%.6f" % slope )
-
-#         if qSlope.full():  # 如果满了 ，最早的出队
-#             qSlope.get()
-#             qSlope.put("{:.4f}".format(slope))
-#         else:
-#             qSlope.put("{:.4f}".format(slope))
-#         # print(list(qSlope.queue))
-
-#         if qSlope.full():            # 队列满了就比较
-#             strRtn,ii=compareQueue(qSlope)
-#             if ii>0:
-#                 if strRtn=='top':
-#                     # print("time  is ", result[0], " price is " , result[1] , " current slope is " , "%.6f" % slope )
-#                     # print(ii)
-#                     # print("time  is ", datetime.datetime.fromtimestamp(t[-ii:]), " price is " , s[-ii:] , " find top value "  )
-#                     print("time  is ", datetime.datetime.fromtimestamp(t[-ii]), " price is " , s[-ii] , " find top value , and current time is " , datetime.datetime.fromtimestamp(t[-1]) , 'current price is ' , s[-1] )
-
-#                     # print(list(qSlope.queue))
-#                 if strRtn=='bottom':
-#                     # print("time  is ", result[0], " price is " , result[1] , " current slope is " , "%.6f" % slope )
-#                     # print(ii)
-#                     # print("time  is ", datetime.datetime.fromtimestamp(t[-ii:]), " price is " , s[-ii:] , " find top value "  )
-#                     print("time  is ", datetime.datetime.fromtimestamp(t[-ii]), " price is " , s[-ii] , " find bottom value , and current time is " ,datetime.datetime.fromtimestamp(t[-1]) , 'current price is ' , s[-1] )
-
-#                     # print(list(qSlope.queue))
+    #                 # print(list(qSlope.queue))
