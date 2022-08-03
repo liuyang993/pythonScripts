@@ -1,4 +1,6 @@
-# 要实现的功能  1--- 实时描述图形 当前是涨势还是跌势， 标出转折点， 预测反弹和下跌点位， 
+# 要实现的功能  1--- 实时描述图形 当前是涨势还是跌势， 标出转折点， 预测反弹和下跌点位， 在哪里做
+                    # 假顶和假底了， 什么点位买入卖出的人上当了？ 
+                    
 
 
 # 资料 ： https://phdinds-aim.github.io/time_series_handbook/02_LinearForecastingTrendandMomentumForecasting/02_LinearTrendandMomentumForecasting.html 
@@ -10,6 +12,7 @@
     # https://stackoverflow.com/questions/71031226/calculating-trend-per-customer-level-in-python-dataframe 
     # https://dev.to/acnice/sales-trend-analysis-with-pandas-1bcm
     
+
 
 
 import sys
@@ -26,6 +29,8 @@ import pandas as pd
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from statsmodels.tsa.stattools import adfuller
+
 
 t=[]
 s=[]
@@ -91,5 +96,11 @@ conn.close()    #very important , remember MUST close
 print('now will print description')
 print(df['value'].describe())
 
+X= df['value']
+result = adfuller(X)
+print('ADF Statistic: %f' % result[0])
+print('p-value: %f' % result[1])
+print('Critical Values:')
+for key, value in result[4].items():
+	print('\t%s: %.3f' % (key, value))
 
-    
