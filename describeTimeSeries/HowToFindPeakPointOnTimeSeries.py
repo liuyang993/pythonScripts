@@ -217,7 +217,10 @@ def compareQueue(L):    # 计算10个元素的队列里，是不是最大值出�
 conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
 
-sql = 'select happentime,lastprice from oi2205_20220321 where hour(happentime)>=9 and hour(happentime)<=15 ;'
+if sys.argv[2] == 'day':
+    sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime)>=9 and hour(happentime)<=15 ;'
+else:
+    sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime)>=21 and hour(happentime)<=23 ;'
 a.execute(sql)
 data=a.fetchall()
 conn.commit()
@@ -266,13 +269,13 @@ while True:
         if len(yy)>3 and (yy[-1]>yy[-2]) and (yy[-2]>yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) > 2.0) : 
             print ('find quick up trend at ' ,datetime.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1])
 
-        time.sleep(0.1)        
+              
 
     # print(datetime.datetime.fromtimestamp(t[-1]))
     # print(s[-1])
     iii=iii+2 
     jjj=jjj+1
-    # time.sleep(5)
+    # time.sleep(0.1)
 
     # if len(t)>60:
     #     # rtpd = real_time_peak_detection(s, lag, threshold, influence)

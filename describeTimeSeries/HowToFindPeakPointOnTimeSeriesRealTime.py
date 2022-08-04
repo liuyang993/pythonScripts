@@ -28,15 +28,15 @@ def trendline(index,data, order=1):
     return float(slope)
 
 def realtimequeryDB(tablename):
-    x = datetime.datetime(2022,8,4,14,28,2)
+    x = datetime.datetime(2022,8,4,21,0,2)
 
     conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
     a=conn.cursor()
 
 
     jjj=0
-    while x < datetime.datetime(2022,8,4,15,30,2):
-        sql = 'select happentime,lastprice from ' + tablename  + ' where happentime<=%s and hour(happentime)>=9  order by happentime desc limit 2 ;'
+    while x < datetime.datetime(2022,8,4,23,0,2):
+        sql = 'select happentime,lastprice from ' + tablename  + ' where happentime<=%s and hour(happentime)>=21  order by happentime desc limit 2 ;'
         a.execute(sql,x)
 
         data=a.fetchall()
@@ -46,8 +46,8 @@ def realtimequeryDB(tablename):
         # t.append(data[ii][0])
         s.append((data[0][1] + data[1][1])/2)
 
-        print(datetime.datetime.fromtimestamp(t[-1]))
-        print(s[-1])        
+        # print(datetime.datetime.fromtimestamp(t[-1]))
+        # print(s[-1])        
 
         if jjj>10:
             # slope, intercept, r_value, p_value, std_err = stats.linregress(t[-iii:],s[-iii:])
@@ -85,8 +85,8 @@ def realtimequeryDB(tablename):
         x= x + datetime.timedelta(seconds=1)      
 
 # creating thread
-t1 = threading.Thread(target=realtimequeryDB, args=('oi2209_20220804',))
-t2 = threading.Thread(target=realtimequeryDB, args=('pta2209_20220804',))
+t1 = threading.Thread(target=realtimequeryDB, args=('oi2209_20220805',))
+t2 = threading.Thread(target=realtimequeryDB, args=('pta2209_20220805',))
 
 # starting thread 1
 t1.start()
