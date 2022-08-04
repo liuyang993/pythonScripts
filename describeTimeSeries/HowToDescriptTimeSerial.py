@@ -37,16 +37,16 @@ s=[]
 
 df = pd.DataFrame( columns=['date','value'])
 
-x = datetime.datetime(2018,12,21,9,30,2)
+x = datetime.datetime(2022,8,4,13,30,2)
 
 #for i in range(1500):
 conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
 # while True:
-while x < datetime.datetime(2018,12,21,9,32,2):
+while x < datetime.datetime(2022,8,4,15,32,2):
     print("-----------------")
     a=conn.cursor()
-    sql = 'select happentime,lastprice from if1901_20181221 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit 2 ;'
+    sql = 'select happentime,lastprice from oi2209_20220804 where happentime<=%s and hour(happentime)>=9  order by happentime desc limit 2 ;'
     a.execute(sql,x)
     data=a.fetchall()
     conn.commit()
@@ -63,14 +63,14 @@ while x < datetime.datetime(2018,12,21,9,32,2):
         #     s.put(result[1])
         t.append(result[0].timestamp())
         s.append(result[1])
-        # print(result[0])
-        # print(result[1])
-        df=df.append({'date':result[0],'value':result[1]}, ignore_index=True)
+        print(result[0])
+        print(result[1])
+        # df=df.append({'date':result[0],'value':result[1]}, ignore_index=True)
 
     # print(t)
     # print(s)
     #print(s[-1])
-    print(df.head(1000))
+    # print(df.head(1000))
 
 
     # #print('Maximum is: ', max(s) , " and it position is ", s.index(max(s)))
@@ -90,17 +90,20 @@ while x < datetime.datetime(2018,12,21,9,32,2):
     
     #slope, intercept, r_value, p_value, std_err = stats.linregress(t,s)
     #print("when ", datetime.datetime.fromtimestamp(t[0]) , " 5 minutes slope is " ,"%.6f" % slope, " and that time 's price is ", s[0])
-    time.sleep(0.1)
+    time.sleep(5)
     x= x + datetime.timedelta(seconds=1)
 conn.close()    #very important , remember MUST close 
-print('now will print description')
-print(df['value'].describe())
 
-X= df['value']
-result = adfuller(X)
-print('ADF Statistic: %f' % result[0])
-print('p-value: %f' % result[1])
-print('Critical Values:')
-for key, value in result[4].items():
-	print('\t%s: %.3f' % (key, value))
+
+
+# print('now will print description')
+# print(df['value'].describe())
+
+# X= df['value']
+# result = adfuller(X)
+# print('ADF Statistic: %f' % result[0])
+# print('p-value: %f' % result[1])
+# print('Critical Values:')
+# for key, value in result[4].items():
+# 	print('\t%s: %.3f' % (key, value))
 

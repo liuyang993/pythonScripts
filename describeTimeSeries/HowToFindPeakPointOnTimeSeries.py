@@ -217,7 +217,7 @@ def compareQueue(L):    # 计算10个元素的队列里，是不是最大值出�
 conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
 
-sql = 'select happentime,lastprice from pta2209_20220725 where hour(happentime)>=21 and hour(happentime)<=23 ;'
+sql = 'select happentime,lastprice from oi2205_20220321 where hour(happentime)>=9 and hour(happentime)<=15 ;'
 a.execute(sql)
 data=a.fetchall()
 conn.commit()
@@ -244,25 +244,32 @@ while True:
         # slope, intercept, r_value, p_value, std_err = stats.linregress(t[-iii:],s[-iii:])
         # print(slope)
         # print(s)
-        print('------------------')
-        # time.sleep(10)
-        print(s[-jjj:])
+        # print('------------------')
+        
+        # print(s[-jjj:])
         resultent=trendline(t[-jjj:],s[-jjj:])
-        print(resultent)  
+        # print(resultent)  
         
         jjj=0
         if not xx:
             xx.append(10)
         else:
-            xx.append(xx[-1] + 10 )
-        yy.append(resultent) 
-        print(xx)
-        print(yy)
-        time.sleep(1)
-        
+            xx.append(xx[-1] + 10 )  
+        yy.append(resultent)      
+        # print(xx)
+        # print(yy)
 
-    # print(t)
-    # print(s)
+
+        if len(yy)>3 and (yy[-1]<yy[-2]) and (yy[-2]<yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) < -2.0) : 
+            print ('find quick down trend at ' ,datetime.datetime.fromtimestamp(t[-1]), ' value is ' , s[-1] )
+
+        if len(yy)>3 and (yy[-1]>yy[-2]) and (yy[-2]>yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) > 2.0) : 
+            print ('find quick up trend at ' ,datetime.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1])
+
+        time.sleep(0.1)        
+
+    # print(datetime.datetime.fromtimestamp(t[-1]))
+    # print(s[-1])
     iii=iii+2 
     jjj=jjj+1
     # time.sleep(5)
