@@ -28,16 +28,31 @@ def trendline(index,data, order=1):
     return float(slope)
 
 def realtimequeryDB(tablename):
-    x = datetime.datetime(2022,8,4,21,0,2)
+    # x = datetime.datetime(2022,8,5,9,1,2)
+    x = datetime.datetime.now()
 
     conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
     a=conn.cursor()
 
 
     jjj=0
-    while x < datetime.datetime(2022,8,4,23,0,2):
-        sql = 'select happentime,lastprice from ' + tablename  + ' where happentime<=%s and hour(happentime)>=21  order by happentime desc limit 2 ;'
-        a.execute(sql,x)
+    # while x < datetime.datetime(2022,8,5,15,0,2):
+    while True:
+            
+        if (x.time() >  datetime.time(10,15)) and (x.time() <  datetime.time(10,30)):
+            x= x + datetime.timedelta(seconds=1)
+            time.sleep(1)
+            continue
+
+        if (x.time() >  datetime.time(11,30)) and (x.time() <  datetime.time(13,30)):
+            x= x + datetime.timedelta(seconds=1)
+            time.sleep(1)
+            continue
+
+        strtime = x.time().strftime("%H:%M:%S")
+        
+        sql = 'select happentime,lastprice from ' + tablename  + ' where time(happentime)<=%s and hour(happentime)>=9  order by happentime desc limit 2 ;'
+        a.execute(sql,strtime)
 
         data=a.fetchall()
         conn.commit()        
@@ -49,7 +64,7 @@ def realtimequeryDB(tablename):
         # print(datetime.datetime.fromtimestamp(t[-1]))
         # print(s[-1])        
 
-        if jjj>10:
+        if jjj==10:
             # slope, intercept, r_value, p_value, std_err = stats.linregress(t[-iii:],s[-iii:])
             # print(slope)
             # print(s)
@@ -68,12 +83,12 @@ def realtimequeryDB(tablename):
             # print(xx)
             # print(yy)
 
-
+            
             if len(yy)>3 and (yy[-1]<yy[-2]) and (yy[-2]<yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) < -2.0) : 
-                print (tablename ,' find quick down trend at ' ,datetime.datetime.fromtimestamp(t[-1]) )
+                print (tablename ,' find quick down trend at ' ,datetime.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1]  )
 
             if len(yy)>3 and (yy[-1]>yy[-2]) and (yy[-2]>yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) > 2.0) : 
-                print (tablename ,' find quick up trend at ' ,datetime.datetime.fromtimestamp(t[-1]) )
+                print (tablename ,' find quick up trend at ' ,datetime.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1]  )
 
               
 
@@ -84,16 +99,21 @@ def realtimequeryDB(tablename):
         time.sleep(1)
         x= x + datetime.timedelta(seconds=1)      
 
-# creating thread
-t1 = threading.Thread(target=realtimequeryDB, args=('oi2209_20220805',))
-t2 = threading.Thread(target=realtimequeryDB, args=('pta2209_20220805',))
+realtimequeryDB(sys.argv[1])
 
-# starting thread 1
-t1.start()
-# starting thread 2
-t2.start()
 
-# wait until thread 1 is completely executed
-t1.join()
-# wait until thread 2 is completely executed
-t2.join()
+# 发现多线程有问题 2022-08-05
+
+# # creating thread
+# t1 = threading.Thread(target=realtimequeryDB, args=('oi2209_20220805',))
+# t2 = threading.Thread(target=realtimequeryDB, args=('pta2209_20220805',))
+
+# # starting thread 1
+# t1.start()
+# # starting thread 2
+# t2.start()
+
+# # wait until thread 1 is completely executed
+# t1.join()
+# # wait until thread 2 is completely executed
+# t2.join()
