@@ -1,4 +1,9 @@
+#2022-08-05 用于盘后复盘， 检查找出买卖点算法的胜率 
+# 参数  oi2209_20220805 day 
+# day是白天的意思，夜盘用night
+
 import sys
+import os
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pymysql
@@ -7,6 +12,12 @@ import numpy as np
 import datetime
 import time
 import queue
+# sys.path.append('../../pythonScripts')
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+# import calledFromAnotherScript
+import TryToFindSimilarKLineTestForLoop
+
 
 # 找出极值   https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/22640362#22640362
          #  https://github.com/Rgveda/GolemQ/tree/45beff9b1499da52042466eb207cffc7a1c1e2a3/analysis    中国人写的量化库
@@ -179,11 +190,13 @@ def thresholding_algo(y, lag, threshold, influence):
 
 
 firstTop =0
+starttime =''
+endtime = ''
 t=[]
 s=[]
 
-xx=[]
-yy=[]
+xx=[]    # 存时间 10秒一跳 [10,20,30,......]
+yy=[]    # 存每十秒的斜率
 
 
 qSlope= queue.Queue(maxsize=60)   # 10 个元素的队列 
@@ -218,8 +231,12 @@ conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfutur
 a=conn.cursor()
 
 if sys.argv[2] == 'day':
+    starttime ='09:00:00'
+    endtime = '15:00:00'    
     sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime)>=9 and hour(happentime)<=15 ;'
 else:
+    starttime ='21:00:00'
+    endtime = '23:00:00'
     sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime)>=21 and hour(happentime)<=23 ;'
 a.execute(sql)
 data=a.fetchall()
@@ -245,9 +262,10 @@ while True:
 
     if jjj>10:
         # slope, intercept, r_value, p_value, std_err = stats.linregress(t[-iii:],s[-iii:])
+        # print('------------------')
         # print(slope)
         # print(s)
-        # print('------------------')
+        
         
         # print(s[-jjj:])
         resultent=trendline(t[-jjj:],s[-jjj:])
@@ -265,9 +283,13 @@ while True:
 
         if len(yy)>3 and (yy[-1]<yy[-2]) and (yy[-2]<yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) < -2.0) : 
             print ('find quick down trend at ' ,datetime.datetime.fromtimestamp(t[-1]), ' value is ' , s[-1] )
-
+            #找过往图形比较 找出图形特征最像的
+            # calledFromAnotherScript.hello('aaa')
+            # TryToFindSimilarKLineTestForLoop.startCheckCurveSimilar(sys.argv[1],starttime,datetime.datetime.fromtimestamp(t[-1]).time(),sys.argv[3])
+            TryToFindSimilarKLineTestForLoop.startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3])
         if len(yy)>3 and (yy[-1]>yy[-2]) and (yy[-2]>yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) > 2.0) : 
             print ('find quick up trend at ' ,datetime.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1])
+
 
               
 
@@ -275,7 +297,7 @@ while True:
     # print(s[-1])
     iii=iii+2 
     jjj=jjj+1
-    # time.sleep(0.1)
+    # time.sleep(5)
 
     # if len(t)>60:
     #     # rtpd = real_time_peak_detection(s, lag, threshold, influence)

@@ -50,8 +50,12 @@ def realtimequeryDB(tablename):
             continue
 
         strtime = x.time().strftime("%H:%M:%S")
+
+        if sys.argv[2] == 'day':
+            sql = 'select happentime,lastprice from ' + tablename  + ' where time(happentime)<=%s and hour(happentime)>=9  order by happentime desc limit 2 ;'
+        else:
+            sql = 'select happentime,lastprice from ' + tablename  + ' where time(happentime)<=%s and hour(happentime)>=21 and hour(happentime)<=23  order by happentime desc limit 2 ;'
         
-        sql = 'select happentime,lastprice from ' + tablename  + ' where time(happentime)<=%s and hour(happentime)>=9  order by happentime desc limit 2 ;'
         a.execute(sql,strtime)
 
         data=a.fetchall()

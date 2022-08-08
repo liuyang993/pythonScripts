@@ -10,7 +10,6 @@ import pandas as pd
 # import seaborn as sns
 import time
 from statistics import mean
-
 import sys
 #sys.argv += 'if1906_20190516 09:30:00 10:00:00'.split()      #debug 时用
 
@@ -72,127 +71,132 @@ def path_cost(x, y, accumulated_cost, distances):
     return path, cost   
 
 
+def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar):
+    # print(p_tablename)
+    # print(p_starttime)
+    # print(p_endtime)
+    # print(p_tablefirstchar)
 
-conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture20210825')
-a=conn.cursor()
+    conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
+    a=conn.cursor()
 
-sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + sys.argv[1]  + ' where time(happentime)>"'  + sys.argv[2]  + '" and time(happentime)<"' + sys.argv[3]  + '";' 
-#print(sql)
-a.execute(sql)
-data=a.fetchall()
-
-
-x=[]
-s0=[]
-for result in data:
-    x.append(result[0])
-    s0.append(result[1])
-
-
-xOneMinAver= []
-
-SplitArrayAndCalAver(x,xOneMinAver,60)
-
-#print(x)
-
-x= xOneMinAver
-# print("x is ")
-# print(x)
-normalizeArray(x)
-print('orignal array have ' , len(x) , ' elements ')
-
-print('************************************************')
-
-
-loopi = 1 
-loopTableName = sys.argv[1]
-while loopi < 300:
-    loopi = loopi + 1
-    #sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else haentime end  from if1906_20190419'   + ' where time(happentime)<"'  + sys.argv[2]  + '";'
-
-    # sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "' + sys.argv[4] + '%" and table_name < "' + loopTableName + '" order by create_time desc limit 1;'
-
-    # sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "' + sys.argv[4] + '%" and SUBSTRING_INDEX(table_name,"_",-1) < SUBSTRING_INDEX("' + loopTableName + '","_",-1) order by create_time desc limit 1;'
-
-    sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture20210825" and table_name like "' + sys.argv[4] + '%" and SUBSTRING_INDEX(table_name,"_",-1) < SUBSTRING_INDEX("' + loopTableName + '","_",-1) order by SUBSTRING_INDEX(table_name,"_",-1) desc limit 1;'
-
-
-    # print(sql)
-    a.execute(sql)
-    data=a.fetchall()
-    for result in data:
-        loopTableName = result[0]
-    print(loopTableName)
-
-    sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + loopTableName  + ' where time(happentime)>"'  + sys.argv[2]  + '" and time(happentime)<"' + sys.argv[3]  + '";' 
+    sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + p_tablename  + ' where time(happentime)>"'  + p_starttime  + '" and time(happentime)<"' + p_endtime  + '";' 
     #print(sql)
     a.execute(sql)
     data=a.fetchall()
 
-    y=[]
+
+    x=[]
     s0=[]
     for result in data:
-        y.append(result[0])
+        x.append(result[0])
         s0.append(result[1])
 
 
-    if not y:
-        print('no data from ' , loopTableName)
-        continue
+    xOneMinAver= []
 
-    #print(y)
+    SplitArrayAndCalAver(x,xOneMinAver,60)
 
-    #s = time.time()
+    #print(x)
 
-    yOneMinAver = []
-    SplitArrayAndCalAver(y,yOneMinAver,60)
-    y=  yOneMinAver
+    x= xOneMinAver
+    # print("x is ")
+    # print(x)
+    normalizeArray(x)
+    print('orignal array have ' , len(x) , ' elements ')
 
-    normalizeArray(y)
-    #print("original array normalize  Took %f seconds" % (time.time() - s))
+    print('************************************************')
 
-    distances = np.zeros((len(y), len(x)))    #建立一个 len(y) 行 , len(x) 列 的矩阵 ，并初始化为零
-    #print(distances)
 
-    s = time.time()
-    for i in range(len(y)):
-        for j in range(len(x)):
-            distances[i,j] = (x[j]-y[i])**2    # 计算 y的每个点到 x的距离 
+    loopi = 1 
+    loopTableName = p_tablename
+    while loopi < 300:
+        loopi = loopi + 1
+        #sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else haentime end  from if1906_20190419'   + ' where time(happentime)<"'  + sys.argv[2]  + '";'
 
-    #print("cal x y distance matrix use time %f seconds" % (time.time() - s))
+        # sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "' + sys.argv[4] + '%" and table_name < "' + loopTableName + '" order by create_time desc limit 1;'
 
-    #print(distances)        
+        # sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "' + sys.argv[4] + '%" and SUBSTRING_INDEX(table_name,"_",-1) < SUBSTRING_INDEX("' + loopTableName + '","_",-1) order by create_time desc limit 1;'
 
-    #distance_cost_plot(distances)
+        sql = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = "shfuture" and table_name like "' + p_tablefirstchar + '%" and SUBSTRING_INDEX(table_name,"_",-1) < SUBSTRING_INDEX("' + loopTableName + '","_",-1) order by SUBSTRING_INDEX(table_name,"_",-1) desc limit 1;'
 
-    # 另一个矩阵
-    accumulated_cost = np.zeros((len(y), len(x)))
-    accumulated_cost[0,0] = distances[0,0]
 
-    s = time.time()
-    for i in range(1, len(x)):
-        accumulated_cost[0,i] = distances[0,i] + accumulated_cost[0, i-1]    
+        # print(sql)
+        a.execute(sql)
+        data=a.fetchall()
+        for result in data:
+            loopTableName = result[0]
+        print(loopTableName)
 
-    for i in range(1, len(y)):
-        accumulated_cost[i,0] = distances[i, 0] + accumulated_cost[i-1, 0]    
+        sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + loopTableName  + ' where time(happentime)>"'  + p_starttime  + '" and time(happentime)<"' + p_endtime  + '";' 
+        #print(sql)
+        a.execute(sql)
+        data=a.fetchall()
 
-    for i in range(1, len(y)):
-        for j in range(1, len(x)):
-            accumulated_cost[i, j] = min(accumulated_cost[i-1, j-1], accumulated_cost[i-1, j], accumulated_cost[i, j-1]) + distances[i, j]    #这句是最慢的 
-    
-    #print("cal accumulate matrix use time %f seconds" % (time.time() - s))
+        y=[]
+        s0=[]
+        for result in data:
+            y.append(result[0])
+            s0.append(result[1])
 
-    #distance_cost_plot(accumulated_cost)    不用画图
 
-    #找出最短路径 
-    s = time.time()
-    path, cost = path_cost(x, y, accumulated_cost, distances)
-    #print("find shortest path use time %f seconds" % (time.time() - s))
-    #print(path)
+        if not y:
+            print('no data from ' , loopTableName)
+            continue
 
-    print('DTM value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , cost)
-    if cost<1:
-        print('DTM value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , cost)
+        #print(y)
 
+        #s = time.time()
+
+        yOneMinAver = []
+        SplitArrayAndCalAver(y,yOneMinAver,60)
+        y=  yOneMinAver
+
+        normalizeArray(y)
+        #print("original array normalize  Took %f seconds" % (time.time() - s))
+
+        distances = np.zeros((len(y), len(x)))    #建立一个 len(y) 行 , len(x) 列 的矩阵 ，并初始化为零
+        #print(distances)
+
+        s = time.time()
+        for i in range(len(y)):
+            for j in range(len(x)):
+                distances[i,j] = (x[j]-y[i])**2    # 计算 y的每个点到 x的距离 
+
+        #print("cal x y distance matrix use time %f seconds" % (time.time() - s))
+
+        #print(distances)        
+
+        #distance_cost_plot(distances)
+
+        # 另一个矩阵
+        accumulated_cost = np.zeros((len(y), len(x)))
+        accumulated_cost[0,0] = distances[0,0]
+
+        s = time.time()
+        for i in range(1, len(x)):
+            accumulated_cost[0,i] = distances[0,i] + accumulated_cost[0, i-1]    
+
+        for i in range(1, len(y)):
+            accumulated_cost[i,0] = distances[i, 0] + accumulated_cost[i-1, 0]    
+
+        for i in range(1, len(y)):
+            for j in range(1, len(x)):
+                accumulated_cost[i, j] = min(accumulated_cost[i-1, j-1], accumulated_cost[i-1, j], accumulated_cost[i, j-1]) + distances[i, j]    #这句是最慢的 
+        
+        #print("cal accumulate matrix use time %f seconds" % (time.time() - s))
+
+        #distance_cost_plot(accumulated_cost)    不用画图
+
+        #找出最短路径 
+        s = time.time()
+        path, cost = path_cost(x, y, accumulated_cost, distances)
+        #print("find shortest path use time %f seconds" % (time.time() - s))
+        #print(path)
+
+        # print('DTM value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , cost)
+        if cost<0.4:
+            print('DTM value from ' , p_tablename  , ' to ' , loopTableName  , ' is '  , cost)
+            # 
 
 
