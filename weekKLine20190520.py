@@ -77,27 +77,27 @@ for result in data:
 
 
 
-plt.subplot(1, 5, 1)
+plt.subplot(2, 1, 1)
 plt.plot(s0,x)
-plt.ylim(3500,3800)
+# plt.ylim(3500,3800)
 #plt.legend()
 
-plt.subplot(1, 5, 2)
+plt.subplot(2, 1, 2)
 plt.plot(s,y)
-plt.ylim(3500,3800)
+# plt.ylim(3500,3800)
 
 
-plt.subplot(1, 5, 3)
-plt.plot(s1,y1)
-plt.ylim(3500,3800)
+# plt.subplot(5, 1, 3)
+# plt.plot(s1,y1)
+# # plt.ylim(3500,3800)
 
-plt.subplot(1, 5, 4)
-plt.plot(s2,y2)
-plt.ylim(3500,3800)
+# plt.subplot(5, 1, 4)
+# plt.plot(s2,y2)
+# # plt.ylim(3500,3800)
 
-plt.subplot(1, 5, 5)
-plt.plot(s3,y3)
-plt.ylim(3500,3800)
+# plt.subplot(5, 1, 5)
+# plt.plot(s3,y3)
+# # plt.ylim(3500,3800)
 
 
 plt.show()

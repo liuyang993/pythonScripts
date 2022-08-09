@@ -47,5 +47,5 @@ def example2():
         subax1.plot(x,np.sin(x))
         subax2.plot(x,np.sin(x))
 
-example2()
+example1()
 plt.show()

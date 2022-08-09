@@ -1,6 +1,7 @@
 #2022-08-05 用于盘后复盘， 检查找出买卖点算法的胜率 
-# 参数  oi2209_20220805 day 
+# 参数  python HowToFindPeakPointOnTimeSeries.py oi2209_20220805 day oi
 # day是白天的意思，夜盘用night
+
 
 import sys
 import os
@@ -16,7 +17,7 @@ import queue
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 # import calledFromAnotherScript
-import TryToFindSimilarKLineTestForLoop
+from TryToFindSimilarKLineTestForLoop import startCheckCurveSimilar
 
 
 # 找出极值   https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/22640362#22640362
@@ -284,12 +285,10 @@ while True:
         if len(yy)>3 and (yy[-1]<yy[-2]) and (yy[-2]<yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) < -2.0) : 
             print ('find quick down trend at ' ,datetime.datetime.fromtimestamp(t[-1]), ' value is ' , s[-1] )
             #找过往图形比较 找出图形特征最像的
-            # calledFromAnotherScript.hello('aaa')
-            # TryToFindSimilarKLineTestForLoop.startCheckCurveSimilar(sys.argv[1],starttime,datetime.datetime.fromtimestamp(t[-1]).time(),sys.argv[3])
-            TryToFindSimilarKLineTestForLoop.startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3])
+            # startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
         if len(yy)>3 and (yy[-1]>yy[-2]) and (yy[-2]>yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) > 2.0) : 
             print ('find quick up trend at ' ,datetime.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1])
-
+            # startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
 
               
 

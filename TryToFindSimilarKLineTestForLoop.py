@@ -1,3 +1,6 @@
+# python TryToFindSimilarKLineTestForLoop.py oi2209_20220805 day oi
+
+
 import sys
 # import matplotlib.pylab as plt
 import matplotlib.pyplot as plt
@@ -12,6 +15,26 @@ import time
 from statistics import mean
 import sys
 #sys.argv += 'if1906_20190516 09:30:00 10:00:00'.split()      #debug 时用
+# import RBKLineNew
+
+
+def getKLineData(p_tablename,p_starttime,p_endtime):
+
+    conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
+
+    a=conn.cursor()
+
+    sql = 'select lastprice, happentime   from ' + p_tablename  + ' where time(happentime)>"'  + p_starttime  + '" and time(happentime)<"' + p_endtime + '";' 
+ 
+    a.execute(sql)
+    data=a.fetchall()
+    t=[]
+    s=[]
+    for result in data:
+        t.append(result[0])
+        s.append(result[1])
+
+    return(t,s)
 
 
 def divide_chunks(l, n): 
@@ -71,7 +94,7 @@ def path_cost(x, y, accumulated_cost, distances):
     return path, cost   
 
 
-def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar):
+def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_dayornight):
     # print(p_tablename)
     # print(p_starttime)
     # print(p_endtime)
@@ -110,6 +133,9 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar):
 
     loopi = 1 
     loopTableName = p_tablename
+
+    matchtables = 1
+
     while loopi < 300:
         loopi = loopi + 1
         #sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else haentime end  from if1906_20190419'   + ' where time(happentime)<"'  + sys.argv[2]  + '";'
@@ -196,7 +222,64 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar):
 
         # print('DTM value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , cost)
         if cost<0.4:
+            if matchtables>4:
+                plt.show()
+                break
             print('DTM value from ' , p_tablename  , ' to ' , loopTableName  , ' is '  , cost)
             # 
+            # RBKLineNew.startDrawKLine(loopTableName,p_starttime,p_endtime)
+            tp =[]
+            sp =[]
+            if p_dayornight =="day":
+                tp,sp = getKLineData(loopTableName,p_starttime,"14:59:59")
+            else:
+                tp,sp = getKLineData(loopTableName,p_starttime,"22:59:59")       
+            # print(sp[-1])
+           
+            # print(sp[-1].year)
+            # print(sp[-1].month)
+            # print(sp[-1].day)
+
+            d = dt.datetime.strptime(p_endtime, '%H:%M:%S')
+            # print(d.hour)
+            # print(d.minute)
+            # print(d.second)
 
 
+            time0 = dt.datetime(sp[-1].year,sp[-1].month,sp[-1].day,d.hour,d.minute,d.second)
+            print(time0)
+
+
+            try:
+                x0 = sp.index(time0)
+
+
+
+                plt.subplot(4, 1, matchtables)
+                plt.tight_layout()
+                # plt.plot(sp,tp)
+
+                plt.plot(sp[:x0+1], tp[:x0+1])
+                plt.plot(sp[x0:], tp[x0:])
+
+
+                plt.title(loopTableName + " " + str(cost))
+                matchtables=matchtables+1
+            except:
+                plt.subplot(4, 1, matchtables)
+                plt.tight_layout()
+                plt.plot(sp,tp)
+
+
+                plt.title(loopTableName + " " + str(cost))
+                matchtables=matchtables+1
+            
+    plt.show()
+
+
+
+
+if __name__ == '__main__':
+    startCheckCurveSimilar(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5])
+
+# if __name__ == '__main__':
