@@ -18,13 +18,14 @@ import queue
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 # import calledFromAnotherScript
 from TryToFindSimilarKLineTestForLoop import startCheckCurveSimilar
-
+import logging
 
 # 找出极值   https://stackoverflow.com/questions/22583391/peak-signal-detection-in-realtime-timeseries-data/22640362#22640362
          #  https://github.com/Rgveda/GolemQ/tree/45beff9b1499da52042466eb207cffc7a1c1e2a3/analysis    中国人写的量化库
 
 # class real_time_peak_detection(): 这种方法要先定义一个threshold，临界值， 但是实际情况中，上哪找这个临界值去。谁知道应该定义多少合适 
 
+logging.basicConfig(filename='findexetime.log',level=logging.DEBUG)
 
 def trendline(index,data, order=1):
     coeffs = np.polyfit(index, list(data), order)
@@ -239,6 +240,7 @@ else:
     starttime ='21:00:00'
     endtime = '23:00:00'
     sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime)>=21 and hour(happentime)<=23 ;'
+print(sql)
 a.execute(sql)
 data=a.fetchall()
 conn.commit()
@@ -261,7 +263,7 @@ while True:
     # t.append(data[ii][0])
     s.append((data[iii][1] + data[iii+1][1])/2)
 
-    if jjj>10:
+    if jjj==10:
         # slope, intercept, r_value, p_value, std_err = stats.linregress(t[-iii:],s[-iii:])
         # print('------------------')
         # print(slope)
@@ -284,12 +286,13 @@ while True:
 
         if len(yy)>3 and (yy[-1]<yy[-2]) and (yy[-2]<yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) < -2.0) : 
             print ('find quick down trend at ' ,datetime.datetime.fromtimestamp(t[-1]), ' value is ' , s[-1] )
+            logging.info ('find quick down trend at %s ,value is %s' , str(datetime.datetime.fromtimestamp(t[-1])), str(s[-1]) )
             #找过往图形比较 找出图形特征最像的
             # startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
         if len(yy)>3 and (yy[-1]>yy[-2]) and (yy[-2]>yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) > 2.0) : 
             print ('find quick up trend at ' ,datetime.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1])
             # startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
-
+            logging.info('find quick up trend at %s ,   value is %s' ,str(datetime.datetime.fromtimestamp(t[-1]))  , str(s[-1]))
               
 
     # print(datetime.datetime.fromtimestamp(t[-1]))

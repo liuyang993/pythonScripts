@@ -152,7 +152,7 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
         data=a.fetchall()
         for result in data:
             loopTableName = result[0]
-        print(loopTableName)
+        # print(loopTableName)
 
         sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + loopTableName  + ' where time(happentime)>"'  + p_starttime  + '" and time(happentime)<"' + p_endtime  + '";' 
         #print(sql)
@@ -273,6 +273,8 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
 
                 plt.title(loopTableName + " " + str(cost))
                 matchtables=matchtables+1
+        else:  # 已经找够4个
+            break
             
     plt.show()
 
