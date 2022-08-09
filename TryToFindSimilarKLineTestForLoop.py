@@ -99,7 +99,7 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
     # print(p_starttime)
     # print(p_endtime)
     # print(p_tablefirstchar)
-
+    # print(p_dayornight)
     conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
     a=conn.cursor()
 
@@ -167,7 +167,7 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
 
 
         if not y:
-            print('no data from ' , loopTableName)
+            # print('no data from ' , loopTableName)
             continue
 
         #print(y)
@@ -222,7 +222,7 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
 
         # print('DTM value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , cost)
         if cost<0.4:
-            if matchtables>4:
+            if matchtables>5:
                 plt.show()
                 break
             print('DTM value from ' , p_tablename  , ' to ' , loopTableName  , ' is '  , cost)
@@ -247,7 +247,7 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
 
 
             time0 = dt.datetime(sp[-1].year,sp[-1].month,sp[-1].day,d.hour,d.minute,d.second)
-            print(time0)
+            # print(time0)
 
 
             try:
@@ -255,7 +255,7 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
 
 
 
-                plt.subplot(4, 1, matchtables)
+                plt.subplot(5, 1, matchtables)
                 plt.tight_layout()
                 # plt.plot(sp,tp)
 
@@ -266,15 +266,14 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
                 plt.title(loopTableName + " " + str(cost))
                 matchtables=matchtables+1
             except:
-                plt.subplot(4, 1, matchtables)
+                plt.subplot(5, 1, matchtables)
                 plt.tight_layout()
                 plt.plot(sp,tp)
 
 
                 plt.title(loopTableName + " " + str(cost))
                 matchtables=matchtables+1
-        else:  # 已经找够4个
-            break
+   
             
     plt.show()
 

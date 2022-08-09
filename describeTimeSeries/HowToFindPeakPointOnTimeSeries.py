@@ -263,6 +263,8 @@ while True:
     # t.append(data[ii][0])
     s.append((data[iii][1] + data[iii+1][1])/2)
 
+    # print(s)
+
     if jjj==10:
         # slope, intercept, r_value, p_value, std_err = stats.linregress(t[-iii:],s[-iii:])
         # print('------------------')

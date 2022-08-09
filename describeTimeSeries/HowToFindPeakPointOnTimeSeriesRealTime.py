@@ -89,7 +89,7 @@ def realtimequeryDB(tablename):
         t.append(data[0][0].timestamp())
         # t.append(data[ii][0])
         s.append((data[0][1] + data[1][1])/2)
-
+        # print(s)
         # print(datetime.datetime.fromtimestamp(t[-1]))
         # print(s[-1])        
 
@@ -116,20 +116,20 @@ def realtimequeryDB(tablename):
             if len(yy)>3 and (yy[-1]<yy[-2]) and (yy[-2]<yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) < -2.0) : 
                 print (tablename ,' find quick down trend at ' ,dt.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1]  )
                 logging.info (' find quick down trend at %s , value is %s ' , str(dt.datetime.fromtimestamp(t[-1]))  , str(s[-1])  )
-                # startCheckCurveSimilar(sys.argv[1],begintime.strftime("%H:%M:%S"),str(dt.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
-                # print('after deal with this exe point  continue minitor')
+                startCheckCurveSimilar(sys.argv[1],begintime.strftime("%H:%M:%S"),str(dt.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
+                print('after deal with this exe point  continue minitor')
 
             if len(yy)>3 and (yy[-1]>yy[-2]) and (yy[-2]>yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) > 2.0) : 
                 print (tablename ,' find quick up trend at ' ,dt.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1]  )
                 logging.info(' find quick up trend at %s ,value is %s  ' ,dt.datetime.fromtimestamp(t[-1]) , s[-1]  )
-                # startCheckCurveSimilar(sys.argv[1],begintime.strftime("%H:%M:%S"),str(dt.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
-                # print('after deal with this exe point  continue minitor')
+                startCheckCurveSimilar(sys.argv[1],begintime.strftime("%H:%M:%S"),str(dt.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
+                print('after deal with this exe point  continue minitor')
 
         # print(datetime.datetime.fromtimestamp(t[-1]))
         # print(s[-1])
 
         jjj=jjj+1
-        # time.sleep(1)
+        time.sleep(1)
         x= x + dt.timedelta(seconds=1)      
 
 realtimequeryDB(sys.argv[1])
