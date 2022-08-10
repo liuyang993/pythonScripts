@@ -233,13 +233,14 @@ conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfutur
 a=conn.cursor()
 
 if sys.argv[2] == 'day':
-    starttime ='09:00:00'
+    starttime ='13:33:00'
     endtime = '15:00:00'    
-    sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime)>=9 and hour(happentime)<=15 ;'
+    # sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime)>=9 and hour(happentime)<=15 ;'
+    sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where TIME(happentime)>= "' + starttime + '"  and hour(happentime)<=15 ;'
 else:
     starttime ='21:00:00'
     endtime = '23:00:00'
-    sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime)>=21 and hour(happentime)<=23 ;'
+    sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where TIME(happentime)>= "' + starttime + '"  and hour(happentime)<=23 ;'
 print(sql)
 a.execute(sql)
 data=a.fetchall()
@@ -263,7 +264,7 @@ while True:
     # t.append(data[ii][0])
     s.append((data[iii][1] + data[iii+1][1])/2)
 
-    # print(s)
+    # print(data[iii][0])
 
     if jjj==10:
         # slope, intercept, r_value, p_value, std_err = stats.linregress(t[-iii:],s[-iii:])
@@ -290,10 +291,10 @@ while True:
             print ('find quick down trend at ' ,datetime.datetime.fromtimestamp(t[-1]), ' value is ' , s[-1] )
             logging.info ('find quick down trend at %s ,value is %s' , str(datetime.datetime.fromtimestamp(t[-1])), str(s[-1]) )
             #找过往图形比较 找出图形特征最像的
-            # startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
+            startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
         if len(yy)>3 and (yy[-1]>yy[-2]) and (yy[-2]>yy[-3]) and ((yy[-1]+yy[-2]+yy[-3]) > 2.0) : 
             print ('find quick up trend at ' ,datetime.datetime.fromtimestamp(t[-1]) , ' value is ' , s[-1])
-            # startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
+            startCheckCurveSimilar(sys.argv[1],starttime,str(datetime.datetime.fromtimestamp(t[-1]).time()),sys.argv[3],sys.argv[2])
             logging.info('find quick up trend at %s ,   value is %s' ,str(datetime.datetime.fromtimestamp(t[-1]))  , str(s[-1]))
               
 
