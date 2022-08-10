@@ -11,8 +11,10 @@
    有监督机器学习  Supervised Learning <br>
    监督机器学习有两种  Classification  分类法-函数的输出结果是某几项，比如红，蓝 或者 涨，跌 <br>
                      Regression    输出是实数值，比如美元或者重量 <br>
+                     监督学习就是 : we know the answer.
+                     
 
-
+   概率      probability
 ### 2022-08-02 
    <pre>学习怎么用 sklearn 对时间序列分类，能实时判断当前是在涨势还是跌势当中 </pre>
 

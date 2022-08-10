@@ -1,6 +1,6 @@
 #2022-08-05 用于盘后复盘， 检查找出买卖点算法的胜率 
-# 参数  python HowToFindPeakPointOnTimeSeries.py oi2209_20220805 day oi
-# day是白天的意思，夜盘用night
+# 参数  python HowToFindPeakPointOnTimeSeries.py oi2209_20220805 day oi 09:00:00  
+# day是白天的意思，夜盘用night 最后的参数的起始时间的意思 
 
 
 import sys
@@ -231,14 +231,15 @@ def compareQueue(L):    # 计算10个元素的队列里，是不是最大值出�
 
 conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
+starttime = sys.argv[4]
 
 if sys.argv[2] == 'day':
-    starttime ='13:33:00'
+    # starttime ='13:33:00'
     endtime = '15:00:00'    
     # sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where hour(happentime)>=9 and hour(happentime)<=15 ;'
     sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where TIME(happentime)>= "' + starttime + '"  and hour(happentime)<=15 ;'
 else:
-    starttime ='21:00:00'
+    # starttime ='21:00:00'
     endtime = '23:00:00'
     sql = 'select happentime,lastprice from ' + sys.argv[1]  + ' where TIME(happentime)>= "' + starttime + '"  and hour(happentime)<=23 ;'
 print(sql)

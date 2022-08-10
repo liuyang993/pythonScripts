@@ -1,4 +1,4 @@
-# python TryToFindSimilarKLineTestForLoop.py oi2209_20220805 day oi
+# python TryToFindSimilarKLineTestForLoop.py oi2209_20220805  09:00:00  11:30:00 oi day
 
 
 import sys
@@ -104,7 +104,7 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
     a=conn.cursor()
 
     sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else happentime end  from ' + p_tablename  + ' where time(happentime)>"'  + p_starttime  + '" and time(happentime)<"' + p_endtime  + '";' 
-    #print(sql)
+    # print(sql)
     a.execute(sql)
     data=a.fetchall()
 

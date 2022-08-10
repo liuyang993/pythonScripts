@@ -44,7 +44,7 @@ def realtimequeryDB(tablename):
         begintime = dt.datetime.strptime("13:33:00", '%H:%M:%S')
     else:
         
-        x = dt.datetime.strptime("21:00:00", '%H:%M:%S')
+        x = dt.datetime.strptime("21:04:20", '%H:%M:%S')
         # print(x)
         # print(x.time())
         begintime= dt.datetime.strptime("21:00:00", '%H:%M:%S')
@@ -81,6 +81,7 @@ def realtimequeryDB(tablename):
         else:
             sql = 'select happentime,lastprice from ' + tablename  + ' where time(happentime)<=%s and hour(happentime)>=21 and hour(happentime)<=23  order by happentime desc limit 2 ;'
         
+        # print(sql)
         a.execute(sql,strtime)
 
         data=a.fetchall()
