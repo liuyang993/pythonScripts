@@ -226,9 +226,6 @@ def compareQueue(L):    # 计算10个元素的队列里，是不是最大值出�
         str='not'
         return  str,0
         
-
-
-
 conn=pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
 a=conn.cursor()
 starttime = sys.argv[4]

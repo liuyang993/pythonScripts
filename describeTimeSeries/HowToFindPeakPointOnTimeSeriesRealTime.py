@@ -39,9 +39,9 @@ def realtimequeryDB(tablename):
     # x = datetime.datetime(2022,8,5,9,1,2)
     # x = datetime.datetime.now()
     if sys.argv[2] == 'day':
-        x = dt.datetime.strptime("13:33:00", '%H:%M:%S')
+        x = dt.datetime.strptime("13:30:00", '%H:%M:%S')
         # print(x)
-        begintime = dt.datetime.strptime("13:33:00", '%H:%M:%S')
+        begintime = dt.datetime.strptime("13:30:00", '%H:%M:%S')
     else:
         
         x = dt.datetime.strptime("21:04:20", '%H:%M:%S')
@@ -63,15 +63,15 @@ def realtimequeryDB(tablename):
             print('day stop trading')
             break      
             
-        # if (x.time() >  dt.time(10,15)) and (x.time() <  dt.time(10,30)):
-        #     x= x + dt.timedelta(seconds=1)
-        #     time.sleep(1)
-        #     continue
+        if (x.time() >  dt.time(10,15)) and (x.time() <  dt.time(10,30)):
+            x= x + dt.timedelta(seconds=1)
+            time.sleep(1)
+            continue
 
-        # if (x.time() >  dt.time(11,30)) and (x.time() <  dt.time(13,30)):
-        #     x= x + dt.timedelta(seconds=1)
-        #     time.sleep(1)
-        #     continue
+        if (x.time() >  dt.time(11,30)) and (x.time() <  dt.time(13,30)):
+            x= x + dt.timedelta(seconds=1)
+            time.sleep(1)
+            continue
 
         strtime = x.strftime("%H:%M:%S")
         # print(strtime)

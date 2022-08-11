@@ -58,3 +58,13 @@
    ManojK  python AI <br>
    
 
+从dataframe去几列生成多维数组
+
+df[['col1', 'col2']].to_numpy()
+Out: 
+array([[0, 1],
+       [2, 3],
+       [4, 5]])
+
+
+pip install pandas-datareader
