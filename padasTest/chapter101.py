@@ -8,5 +8,16 @@ index = movies.index
 data = movies.to_numpy()
 
 # print(columns)
-print(index)
+# print(index)
 # print(data)
+
+
+# print(index.to_numpy())
+
+# print(movies["director_name"])
+# print(movies.director_name)
+
+# print(movies.director_name.head(100))
+
+print(movies.director_name.value_counts())
+
