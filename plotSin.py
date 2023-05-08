@@ -10,4 +10,6 @@ y = np.sin(2 * np.pi * f * x / Fs)
 plt.plot(x, y)
 plt.xlabel('sample(n)')
 plt.ylabel('voltage(V)')
-plt.show()
+plt.show
+
+

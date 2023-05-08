@@ -136,7 +136,7 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
 
     matchtables = 1
 
-    while loopi < 300:
+    while loopi < 1000:
         loopi = loopi + 1
         #sql = 'select lastprice ,case when hour(happentime)<=11 then DATE_ADD(happentime,interval 90 minute) else haentime end  from if1906_20190419'   + ' where time(happentime)<"'  + sys.argv[2]  + '";'
 
@@ -221,58 +221,64 @@ def startCheckCurveSimilar(p_tablename,p_starttime,p_endtime,p_tablefirstchar,p_
         #print(path)
 
         # print('DTM value from ' , sys.argv[1]  , ' to ' , loopTableName  , ' is '  , cost)
+
+
+
+
+
         if cost<0.4:
-            if matchtables>5:
-                plt.show()
-                break
             print('DTM value from ' , p_tablename  , ' to ' , loopTableName  , ' is '  , cost)
-            # 
-            # RBKLineNew.startDrawKLine(loopTableName,p_starttime,p_endtime)
-            tp =[]
-            sp =[]
-            if p_dayornight =="day":
-                tp,sp = getKLineData(loopTableName,p_starttime,"14:59:59")
-            else:
-                tp,sp = getKLineData(loopTableName,p_starttime,"22:59:59")       
-            # print(sp[-1])
+            # if matchtables>5:
+            #     plt.show()
+            #     break
+            # print('DTM value from ' , p_tablename  , ' to ' , loopTableName  , ' is '  , cost)
+            # # 
+            # # RBKLineNew.startDrawKLine(loopTableName,p_starttime,p_endtime)
+            # tp =[]
+            # sp =[]
+            # if p_dayornight =="day":
+            #     tp,sp = getKLineData(loopTableName,p_starttime,"14:59:59")
+            # else:
+            #     tp,sp = getKLineData(loopTableName,p_starttime,"22:59:59")       
+            # # print(sp[-1])
            
-            # print(sp[-1].year)
-            # print(sp[-1].month)
-            # print(sp[-1].day)
+            # # print(sp[-1].year)
+            # # print(sp[-1].month)
+            # # print(sp[-1].day)
 
-            d = dt.datetime.strptime(p_endtime, '%H:%M:%S')
-            # print(d.hour)
-            # print(d.minute)
-            # print(d.second)
-
-
-            time0 = dt.datetime(sp[-1].year,sp[-1].month,sp[-1].day,d.hour,d.minute,d.second)
-            # print(time0)
+            # d = dt.datetime.strptime(p_endtime, '%H:%M:%S')
+            # # print(d.hour)
+            # # print(d.minute)
+            # # print(d.second)
 
 
-            try:
-                x0 = sp.index(time0)
+            # time0 = dt.datetime(sp[-1].year,sp[-1].month,sp[-1].day,d.hour,d.minute,d.second)
+            # # print(time0)
 
 
+            # try:
+            #     x0 = sp.index(time0)
 
-                plt.subplot(5, 1, matchtables)
-                plt.tight_layout()
-                # plt.plot(sp,tp)
+            #     # plt.figure(figsize=(10,10))
 
-                plt.plot(sp[:x0+1], tp[:x0+1])
-                plt.plot(sp[x0:], tp[x0:])
-
-
-                plt.title(loopTableName + " " + str(cost))
-                matchtables=matchtables+1
-            except:
-                plt.subplot(5, 1, matchtables)
-                plt.tight_layout()
-                plt.plot(sp,tp)
+            #     plt.subplot(5, 1, matchtables)
+            #     # plt.tight_layout()
 
 
-                plt.title(loopTableName + " " + str(cost))
-                matchtables=matchtables+1
+            #     plt.plot(sp[:x0+1], tp[:x0+1])
+            #     plt.plot(sp[x0:], tp[x0:])
+
+
+            #     plt.title(loopTableName + " " + str(cost))
+            #     matchtables=matchtables+1
+            # except:
+            #     plt.subplot(5, 1, matchtables)
+            #     plt.tight_layout()
+            #     plt.plot(sp,tp)
+
+
+            #     plt.title(loopTableName + " " + str(cost))
+            #     matchtables=matchtables+1
    
             
     plt.show()

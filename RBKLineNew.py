@@ -10,7 +10,7 @@ import datetime as dt
 import matplotlib.ticker as ticker
 
 import pylab
-import autoAnnotation
+# import autoAnnotation
 
 
 
@@ -100,7 +100,7 @@ def startDrawKLine(p_tablename,p_starttime,p_endtime):
     plt.plot(s, t)
 
 
-    autoAnnotation.print_annotations(plt,p_tablename)
+    # autoAnnotation.print_annotations(plt,p_tablename)
 
 
 
