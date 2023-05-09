@@ -19,5 +19,8 @@ data = movies.to_numpy()
 
 # print(movies.director_name.head(100))
 
-print(movies.director_name.value_counts())
+# print(movies.director_name.value_counts())
+
+print(movies.movie_facebook_likes.describe())
+
 
