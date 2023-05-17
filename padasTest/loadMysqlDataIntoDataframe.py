@@ -10,7 +10,7 @@ connection = pymysql.connect(host='localhost',user='root',password='MYSQLTB',db=
 
 try:
 
-    query = "SELECT  happentime,lastprice FROM if1901_20190102   "
+    query = "SELECT  happentime,lastprice FROM if1901_20190102"
     df = pd.read_sql(query, connection)
 
 
