@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-movies = pd.read_csv("../../pythonsample/Pandas-Cookbook-Second-Edition-master/data/movie.csv")
+movies = pd.read_csv("../../../pythonsample/Pandas-Cookbook-Second-Edition-master/data/movie.csv")
 
 
 columns = movies.columns
