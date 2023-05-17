@@ -5,13 +5,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-connection = pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture')
+connection = pymysql.connect(host='localhost',user='root',password='MYSQLTB',db='shfuture20230322')
 
 
 try:
 
-    query = "SELECT  happentime,lastprice FROM if1901_20190102"
+    query = "SELECT  happentime,lastprice FROM if1901_20190102 where time(happentime)>='09:30:00' AND time(happentime)<='14:59:58'"
     df = pd.read_sql(query, connection)
+
+    df = df.groupby('happentime', as_index=False, sort=False)['lastprice'].mean()
 
 
     IsSellPoint = []
