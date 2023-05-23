@@ -14,16 +14,14 @@ try:
     df = pd.read_sql(query, connection)
 
     # print(df)
-    dfnew = df.groupby('happentime', as_index=False, sort=False)['lastprice'].mean()
+    dfnew = df.groupby('happentime', as_index=False, sort=False)['lastprice'].mean()   # 以happentime分组，每两行取平均值
+    #如果用sql 就是
+    # SELECT  happentime,sum(lastprice)/2 FROM if1901_20190102 where time(happentime)>='09:30:00' AND time(happentime)<='14:59:58' GROUP BY happentime
+    
+
+
 
     print(dfnew)
-    # print(df["happentime"].unique())lastprice
-    # print(df.groupby(['happentime']))
-    # print(df.groupby(np.arange(len(df))//2).mean())
-
-    # dfnew = df.groupby(np.arange(len(df))//2).mean()
-    # dfnew['happentime'] = df["happentime"].unique().tolist()
-    # print(dfnew)
-
+ 
 finally:
     connection.close()

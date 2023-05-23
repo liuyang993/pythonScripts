@@ -41,19 +41,28 @@ import time
 
 #第二个  https://stackoverflow.com/questions/67841754/get-values-of-previous-rows-as-list/67842195#67842195
 
-def some_function_v1(df):
-  df['foo1'] = df.foo.shift(1)
-  df['foo2'] = df.foo.shift(2)
-  df['foo3'] = df.foo.shift(3)
+# def some_function_v1(df):
+#   df['foo1'] = df.foo.shift(1)
+#   df['foo2'] = df.foo.shift(2)
+#   df['foo3'] = df.foo.shift(3)
 
 
-  df['bar'] = df.apply(lambda x: [x['foo1'],x['foo2'],x['foo3']], axis=1)
-  # print(df)
-  df = df.drop(columns=['foo1','foo2','foo3'])
-  return df
+#   df['bar'] = df.apply(lambda x: [x['foo1'],x['foo2'],x['foo3']], axis=1)
+#   # print(df)
+#   df = df.drop(columns=['foo1','foo2','foo3'])
+#   return df
 
-data = { 'foo':['a','b','c','d','e','f','g']}
-df = pd.DataFrame(data)
+# data = { 'foo':['a','b','c','d','e','f','g']}
+# df = pd.DataFrame(data)
 
-df = some_function_v1(df)
+# df = some_function_v1(df)
+# print(df)
+
+
+
+# 第三个 https://stackoverflow.com/questions/73962606/how-to-wrap-cell-value-in-a-dict-maintaining-value-without-using-apply/73962949#73962949 
+
+df=pd.DataFrame()
+df['column'] = ['a', 'b', np.NAN, 'c']
 print(df)
+
