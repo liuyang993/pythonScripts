@@ -56,27 +56,27 @@ loss_fn = nn.BCELoss()  # binary cross entropy       #损失函数
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 
-# n_epochs = 100
-# batch_size = 10
+n_epochs = 100
+batch_size = 10
 
-# for epoch in range(n_epochs):
-#     for i in range(0, len(X), batch_size):
-#         Xbatch = X[i:i+batch_size]
-#         y_pred = model(Xbatch)
-#         ybatch = y[i:i+batch_size]
-#         loss = loss_fn(y_pred, ybatch)
-#         optimizer.zero_grad()
-#         loss.backward()
-#         optimizer.step()
-#     # print(f'Finished epoch {epoch}, latest loss {loss}')
+for epoch in range(n_epochs):
+    for i in range(0, len(X), batch_size):
+        Xbatch = X[i:i+batch_size]
+        y_pred = model(Xbatch)
+        ybatch = y[i:i+batch_size]
+        loss = loss_fn(y_pred, ybatch)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+    # print(f'Finished epoch {epoch}, latest loss {loss}')
 
 
-# # compute accuracy (no_grad is optional)
-# with torch.no_grad():
-#     y_pred = model(X)
+# compute accuracy (no_grad is optional)
+with torch.no_grad():
+    y_pred = model(X)
 
-# accuracy = (y_pred.round() == y).float().mean()
-# print(f"Accuracy {accuracy}")
+accuracy = (y_pred.round() == y).float().mean()
+print(f"Accuracy {accuracy}")
 
 
 
