@@ -21,14 +21,14 @@ y = torch.tensor(y, dtype=torch.float32).reshape(-1, 1)
 # print(X)
 # print(y)   #把x，y转换成tensor
 
-model = nn.Sequential(
-    nn.Linear(8, 12),
-    nn.ReLU(),
-    nn.Linear(12, 8),
-    nn.ReLU(),
-    nn.Linear(8, 1),
-    nn.Sigmoid()
-)
+# model = nn.Sequential(
+#     nn.Linear(8, 12),
+#     nn.ReLU(),
+#     nn.Linear(12, 8),
+#     nn.ReLU(),
+#     nn.Linear(8, 1),
+#     nn.Sigmoid()
+# )
 
 # print(model)
 
