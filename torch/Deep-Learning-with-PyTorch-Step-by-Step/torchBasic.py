@@ -114,3 +114,66 @@ print(error.requires_grad, yhat.requires_grad, \
 print(y_train_tensor.requires_grad, x_train_tensor.requires_grad)
 
 print(b.grad, w.grad)
+
+
+
+
+# Step 0 - Initializes parameters "b" and "w" randomly
+torch.manual_seed(42)
+b = torch.randn(1, requires_grad=True, \
+dtype=torch.float, device=device)
+w = torch.randn(1, requires_grad=True, \
+dtype=torch.float, device=device)
+
+# Defines number of epochs
+n_epochs = 1000
+# Sets learning rate - this is "eta" ~ the "n"-like Greek letter
+lr = 0.1
+
+for epoch in range(n_epochs):
+  # Step 1 - Computes model's predicted output - forward pass
+  yhat = b + w * x_train_tensor
+
+  # Step 2 - Computes the loss
+  # We are using ALL data points, so this is BATCH gradient
+  # descent. How wrong is our model? That's the error!
+  error = (yhat - y_train_tensor)
+  # It is a regression, so it computes mean squared error (MSE)
+  loss = (error ** 2).mean()
+
+  # Step 3 - Computes gradients for both "b" and "w"
+  # parameters. No more manual computation of gradients!
+  # b_grad = 2 * error.mean()
+  # w_grad = 2 * (x_tensor * error).mean()
+  # We just tell PyTorch to work its way BACKWARDS
+  # from the specified loss!
+  loss.backward()
+
+  # Step 4 - Updates parameters using gradients and
+  # the learning rate. But not so fast...
+  # FIRST ATTEMPT - just using the same code as before
+  # AttributeError: 'NoneType' object has no attribute 'zero_'
+  # b = b - lr * b.grad
+  # w = w - lr * w.grad
+  # print(b)
+
+  # SECOND ATTEMPT - using in-place Python assingment
+  # RuntimeError: a leaf Variable that requires grad
+  # has been used in an in-place operation.
+  # b -= lr * b.grad ②
+  # w -= lr * w.grad ②
+
+  # THIRD ATTEMPT - NO_GRAD for the win!
+  # We need to use NO_GRAD to keep the update out of
+  # the gradient computation. Why is that? It boils
+  # down to the DYNAMIC GRAPH that PyTorch uses...
+  with torch.no_grad():
+    b -= lr * b.grad
+    w -= lr * w.grad
+
+# PyTorch is "clingy" to its computed gradients, we
+# need to tell it to let it go...
+b.grad.zero_()
+w.grad.zero_()
+
+print(b, w)
