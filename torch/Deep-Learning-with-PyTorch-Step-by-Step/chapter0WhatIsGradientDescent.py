@@ -75,6 +75,8 @@ loss = (error ** 2).mean()
 # b_range = np.linspace(0, 1, 3)
 # print(b_range)
 
+
+#为什么这里是101， 因为是以true_b，true_w为中点的平均分布，总数必须是奇数，这样才能把中间正确的点包含进来
 b_range = np.linspace(true_b - 3, true_b + 3, 101)
 w_range = np.linspace(true_w - 3, true_w + 3, 101)
 
@@ -128,5 +130,14 @@ print(b_grad, w_grad)
 # figure7(b, w, bs, ws, all_losses)
 # plt.show()
 
-figure8(b, w, bs, ws, all_losses)
-plt.show()
+
+# Sets learning rate - this is "eta" ~ the "n" like Greek letter
+lr = 0.1
+print(b, w)
+# Step 4 - Updates parameters using gradients and the
+# learning rate
+b = b - lr * b_grad
+w = w - lr * w_grad
+print(b, w)
+
+
