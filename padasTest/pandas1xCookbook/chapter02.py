@@ -3,14 +3,14 @@ import numpy as np
 movies = pd.read_csv("../../../pythonsample/Pandas-Cookbook-Second-Edition-master/data/movie.csv")
 
 
-movie_actor_director = movies[
-        [
-        "actor_1_name",
-        "actor_2_name",
-        "actor_3_name",
-        "director_name",
-        ]
-    ]
+# movie_actor_director = movies[
+#         [
+#         "actor_1_name",
+#         "actor_2_name",
+#         "actor_3_name",
+#         "director_name",
+#         ]
+#     ]
 
 
 # print(movie_actor_director.head())
@@ -29,4 +29,14 @@ movie_actor_director = movies[
 
 # print(movies.min())   #显示每一列的值的总个数，除了缺失的
 
-print(movies.describe())
+# print(movies.describe())
+
+def shorten(col):
+    return (
+    str(col)
+    .replace("facebook_likes", "fb")
+    .replace("_for_reviews", "")
+    )
+
+movies = movies.rename(columns=shorten)
+print(movies.columns)

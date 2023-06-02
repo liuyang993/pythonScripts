@@ -1,3 +1,5 @@
+# Creating DataFrames from scratch
+
 import pandas as pd
 import numpy as np
 
@@ -11,5 +13,24 @@ import numpy as np
 
 # print(beatles)
 
-diamond= pd.read_csv("../../../pythonsample/Pandas-Cookbook-Second-Edition-master/data/diamonds.csv")
-print(diamond.info())
+
+
+# diamond= pd.read_csv("../../../pythonsample/Pandas-Cookbook-Second-Edition-master/data/diamonds.csv")
+# print(diamond.info())
+
+
+diamonds2 = pd.read_csv(
+    "../../../pythonsample/Pandas-Cookbook-Second-Edition-master/data/diamonds.csv",
+    nrows=1000,
+    dtype={
+    "carat": np.float32,
+    "depth": np.float32,
+    "table": np.float32,
+    "x": np.float32,
+    "y": np.float32,
+    "z": np.float32,
+    "price": np.int16,
+    },
+)
+
+print(diamonds2.describe())
