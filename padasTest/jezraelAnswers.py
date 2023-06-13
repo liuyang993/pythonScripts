@@ -53,9 +53,25 @@ import timeit
 # print(df1)
 
 
-df = pd.DataFrame({'ID':[123,123,123,456,456,456,456,789,789],
-                    'domain':['vk.com','vk.com','twitter.com','vk.com','facebook.com','vk.com','google.com','twitter.com','vk.com']}
-                    )
-# df.set_index('ID', inplace=True)
+#问题四 按照两列group 计算总数 https://stackoverflow.com/questions/38309729/count-unique-values-per-groups-with-pandas/38309823#38309823
 
-print(df)
+# df = pd.DataFrame({'ID':[123,123,123,456,456,456,456,789,789],
+#                     'domain':['vk.com','vk.com','twitter.com','vk.com','facebook.com','vk.com','google.com','twitter.com','vk.com']}
+#                     )
+# # print(df.domain.value_counts())
+
+# df = df.groupby('domain')['ID'].nunique()
+
+# print(df)
+
+
+#问题五  如何把离散数据分桶  https://stackoverflow.com/questions/45273731/binning-a-column-with-pandas/45273750#45273750 
+#例子把数据分在 [0,1] , [1,5] , [5,10]等区间
+
+# df = pd.DataFrame({'percentage':[46.5,44.2,100.0,42.12]})
+
+# bins = [0, 1, 5, 10, 25, 50, 100]
+# df['binned'] = pd.cut(df['percentage'], bins)
+# print (df)
+
+
