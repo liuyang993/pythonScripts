@@ -165,3 +165,59 @@ import numpy as np
 # print(df[0][0])
 
 
+#问题11 返回列值等于条件的行 index 整数值  https://stackoverflow.com/questions/41217310/get-index-of-a-row-of-a-pandas-dataframe-as-an-integer/41217335#41217335
+
+# np.random.seed(42)
+# # x= np.random.rand(10)
+# # print(x)
+# data = {'A': np.arange(1,10),
+#         'B':np.random.rand(9)
+# }
+
+# df = pd.DataFrame(data)
+# print(df)
+
+# dfb = df[df['A']==5].index.values.astype(int)[0]  #这是只找出一天，如果是多条怎么找
+# print(dfb)
+
+
+#问题12 怎么找出最接近的datetime  
+# https://stackoverflow.com/questions/42264848/pandas-dataframe-how-to-query-the-closest-datetime-index/42266376#42266376
+
+# data = {'datetime': ['2016-11-13 20:00:10','2016-11-13 22:00:00','2016-11-13 22:00:28']
+        
+# }
+
+# df = pd.DataFrame(data)
+
+# df['datetime'] = pd.to_datetime(df['datetime'], format="%Y-%m-%d %H:%M:%S")
+
+
+# print(df)
+
+# dt = pd.to_datetime("2016-11-13 22:00:01" , format="%Y-%m-%d %H:%M:%S")
+# print(dt)
+# print (df.set_index('datetime').index.get_loc(dt, method='nearest'))
+
+
+
+d = {'Customer Name': ['A', 'A', 'B', 'C', 'C', 'C'], 
+     'ID_NO': ['AA', 'AA', 'BB', 'CC', 'CC', 'CC'],
+     'Account Number': ['123456', '123457', '234567', '345678', '345679', '345680'],
+     'Limit': [1000, 1000, 900, 1200, 1200, 1200], 
+     'Balance': [400, 600, 800, 300, 400, 200]}
+df = pd.DataFrame(data=d)
+print(df)
+
+df.drop_duplicates()
+print(df)
+                   
+
+# out = (pd.concat([df.drop_duplicates(['Customer Name','ID_NO'])
+#                     .drop('Account Number', axis=1)
+#                     .assign(Balance=df.groupby(['Customer Name','ID_NO'])['Balance']
+#                     .transform('sum')), 
+#        df[['Account Number','Balance']]
+#                     .rename(columns={'Account Number':'Customer Name'})])
+#          .sort_index(kind='stable', ignore_index=True))
+# print (out)
