@@ -200,17 +200,19 @@ import numpy as np
 # print (df.set_index('datetime').index.get_loc(dt, method='nearest'))
 
 
+#问题13 ， 暂时看不懂
+# https://stackoverflow.com/questions/76487429/python-dataframe-compare-column-values-with-a-list-and-produce-output-with-match/76487454#76487454
 
-d = {'Customer Name': ['A', 'A', 'B', 'C', 'C', 'C'], 
-     'ID_NO': ['AA', 'AA', 'BB', 'CC', 'CC', 'CC'],
-     'Account Number': ['123456', '123457', '234567', '345678', '345679', '345680'],
-     'Limit': [1000, 1000, 900, 1200, 1200, 1200], 
-     'Balance': [400, 600, 800, 300, 400, 200]}
-df = pd.DataFrame(data=d)
-print(df)
 
-df.drop_duplicates()
-print(df)
+# d = {'Customer Name': ['A', 'A', 'B', 'C', 'C', 'C'], 
+#      'ID_NO': ['AA', 'AA', 'BB', 'CC', 'CC', 'CC'],
+#      'Account Number': ['123456', '123457', '234567', '345678', '345679', '345680'],
+#      'Limit': [1000, 1000, 900, 1200, 1200, 1200], 
+#      'Balance': [400, 600, 800, 300, 400, 200]}
+# df = pd.DataFrame(data=d)
+# print(df)
+
+
                    
 
 # out = (pd.concat([df.drop_duplicates(['Customer Name','ID_NO'])
@@ -221,3 +223,21 @@ print(df)
 #                     .rename(columns={'Account Number':'Customer Name'})])
 #          .sort_index(kind='stable', ignore_index=True))
 # print (out)
+
+
+#问题14 生成 adjacency 矩阵 ： https://stackoverflow.com/questions/42806398/create-adjacency-matrix-for-two-columns-in-pandas-dataframe/42806463#42806463
+
+
+d = {'Name_A': ['Adam', 'Chris', 'Adam', 'Ben'], 
+     'Name_B': ['Ben', 'David', 'Chris', 'Chris']}
+df = pd.DataFrame(data=d)
+print(df)
+
+df = pd.crosstab(df.Name_A, df.Name_B)
+idx = df.columns.union(df.index)
+df = df.reindex(index = idx, columns=idx, fill_value=0)
+print(df)
+
+
+
+
