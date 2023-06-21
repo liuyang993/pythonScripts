@@ -1,7 +1,12 @@
+#一个简单的线性回归模型，  y = b + wx + a 
+
+
 import numpy as np
 import torch
 import torch.nn as nn
-from chapter0 import *
+from chapter0 import *    #画图用
+
+
 
 true_b = 1
 true_w = 2
@@ -14,7 +19,7 @@ x = np.random.rand(N, 1)    #生成100个0，1之间的数字。1维,第二次�
 
 
 
-epsilon = (.1 * np.random.randn(N, 1))
+epsilon = (.1 * np.random.randn(N, 1))  #生成随机误差
 # print(epsilon[:5])
 
 
@@ -44,6 +49,7 @@ x_val, y_val = x[val_idx], y[val_idx]
 # print(x[val_idx])
 # figure1(x_train, y_train, x_val, y_val)
 # plt.show()
+
 
 # Step 0 - Initializes parameters "b" and "w" randomly
 np.random.seed(42)
@@ -84,24 +90,20 @@ w_range = np.linspace(true_w - 3, true_w + 3, 101)
 # print(w_range)
 
 
-# nx, ny = (3, 2)
-# print(nx,ny)
-# x = np.linspace(0, 1, nx)
-# print(x)
-# y = np.linspace(0, 1, ny)
-# print(y)
-# xv, yv = np.meshgrid(x, y)
-# print(xv)
-# print(yv)
-
-
-
-
 # meshgrid is a handy function that generates a grid of b and w
 # values for all combinations
+# meshgrid 就是以b_range为x轴，以w_range为y轴，生成网格
+
 bs, ws = np.meshgrid(b_range, w_range)
 print(bs.shape, ws.shape)
 
+print(bs)
+
+#b_range = np.linspace(1, 5, 5)
+#w_range = np.linspace(10, 14, 5)
+#bs, ws = np.meshgrid(b_range, w_range)
+
+#这句非常难理解
 all_predictions = np.apply_along_axis(
   func1d=lambda x: bs + ws * x,
   axis=1,
@@ -116,28 +118,45 @@ print(all_labels.shape)
 
 
 all_errors = (all_predictions - all_labels)
+print('all error shape is ', all_errors.shape)
 
+
+#无法理解，all_errors是一个(80,101,101)的矩阵，矩阵怎么算平方
+#经过实验 发现矩阵的平方就是把每个元素都算平方
+#a = np.arange(4).reshape(2, 2)
+#a**2
+
+
+# all_losses = (all_errors ** 2)
+# print(all_losses.shape)
+
+
+#这里为什么从(80,101,101)变成 (101,101)了 ？
 all_losses = (all_errors ** 2).mean(axis=0)
-# figure4(x_train, y_train, b, w, bs, ws, all_losses)
-# plt.show()
+print('all lose shape is ', all_losses.shape)
 
-# Step 3 - Computes gradients for both "b" and "w" parameters
+# all_losses = (all_errors ** 2).mean(axis=0)
 
-b_grad = 2 * error.mean()     #计算b的偏导数
-w_grad = 2 * (x_train * error).mean()
-print(b_grad, w_grad)
+figure4(x_train, y_train, b, w, bs, ws, all_losses)
+plt.show()
 
-# figure7(b, w, bs, ws, all_losses)
-# plt.show()
+# # Step 3 - Computes gradients for both "b" and "w" parameters
+
+# b_grad = 2 * error.mean()     #计算b的偏导数
+# w_grad = 2 * (x_train * error).mean()
+# print(b_grad, w_grad)
+
+# # figure7(b, w, bs, ws, all_losses)
+# # plt.show()
 
 
-# Sets learning rate - this is "eta" ~ the "n" like Greek letter
-lr = 0.1
-print(b, w)
-# Step 4 - Updates parameters using gradients and the
-# learning rate
-b = b - lr * b_grad
-w = w - lr * w_grad
-print(b, w)
+# # Sets learning rate - this is "eta" ~ the "n" like Greek letter
+# lr = 0.1
+# print(b, w)
+# # Step 4 - Updates parameters using gradients and the
+# # learning rate
+# b = b - lr * b_grad
+# w = w - lr * w_grad
+# print(b, w)
 
 
